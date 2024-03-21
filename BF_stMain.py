@@ -10,12 +10,9 @@ def PlayerDef():
     st.session_state["page_control"] = 0
 
 def DispPStatus():
-    text = PC.DispPlayerStatus(st.session_state["Player"])
+    st.sidebar.header("BF 1.2")
+    text = PC.DispPlayerStatus(st.session_state["Player"], True)
     st.sidebar.markdown(text)
-
-def DispEStatus():
-    text = PC.DispEnemyStatus(st.session_state["Enemy"].Enemy)
-    st.markdown(text)
 
 def change_Town():
     st.session_state["page_control"] = 0
@@ -32,7 +29,7 @@ def change_AddSlot():
 def change_BFinit(BF):
     st.session_state["BF"] = BF
     st.session_state["ShopList"] = []
-    st.session_state["page_control"] = 50
+    st.session_state["page_control"] = 5
 
 def Null_page():
     st.session_state["page_control"] = 999
@@ -85,7 +82,9 @@ elif ("page_control" in st.session_state and st.session_state["page_control"] ==
     Town.AddSlot_Weapon()
 elif ("page_control" in st.session_state and st.session_state["page_control"] == 32 ):
     Town.AddSlot_Armor()
-elif ("page_control" in st.session_state and st.session_state["page_control"] == 50 ):
+elif ("page_control" in st.session_state and st.session_state["page_control"] == 4 ): 
+    Town.ElderAdvice()
+elif ("page_control" in st.session_state and st.session_state["page_control"] == 5 ):
     stBF.BFinit()
 elif ("page_control" in st.session_state and st.session_state["page_control"] == 51 ):
     stBF.BFResult()
@@ -98,11 +97,11 @@ elif ("page_control" in st.session_state and st.session_state["page_control"] ==
 elif ("page_control" in st.session_state and st.session_state["page_control"] == 55 ):
     stBF.GetCrystal()
 elif ("page_control" in st.session_state and st.session_state["page_control"] == 551 ):
-    stBF.Crystal_Weapon(50)
+    stBF.Crystal_Weapon(5)
 elif ("page_control" in st.session_state and st.session_state["page_control"] == 552 ):
-    stBF.Crystal_Armor(50)
+    stBF.Crystal_Armor(5)
 elif ("page_control" in st.session_state and st.session_state["page_control"] == 553 ):
-    stBF.Crystal_Accesory(50) 
+    stBF.Crystal_Accesory(5) 
 elif ("page_control" in st.session_state and st.session_state["page_control"] == 554 ):
     stBF.Crystal_Weapon(1)
 elif ("page_control" in st.session_state and st.session_state["page_control"] == 555 ):

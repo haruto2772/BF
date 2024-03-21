@@ -5,17 +5,25 @@ import BF_ObjectDef as OB
 def ca():
     st.session_state["page_control"] = 3
 
+def ea():
+    st.session_state["page_control"] = 4
+
+def change_BFinit(BF):
+    st.session_state["BF"] = BF
+    st.session_state["ShopList"] = []
+    st.session_state["page_control"] = 5
+
 def Town_command():
-    st.sidebar.button("Shop", on_click = stM.change_Shop)
-    st.sidebar.button("Enchant", on_click = stM.change_Enchant)
-    #st.sidebar.button("AddSlot", on_click = stM.change_AddSlot)
-    st.sidebar.button("AddSlot", on_click = ca)
-    BF1 = st.session_state["BF1"].StageName
-    BF2 = st.session_state["BF2"].StageName
-    if BF1 != "none":
-        st.sidebar.button(BF1, on_click = stM.change_BFinit, args = [st.session_state["BF1"]])
-    if BF2 != "none":
-        st.sidebar.button(BF2, on_click = stM.change_BFinit, args = [st.session_state["BF2"]])
+    st.sidebar.button("Town Shop", on_click = stM.change_Shop)
+    st.sidebar.button("Town Enchant", on_click = stM.change_Enchant)
+    st.sidebar.button("Town AddSlot", on_click = ca)
+    st.sidebar.button("Town Elder Advice", on_click = ea)
+    BF1 = "BF " + st.session_state["BF1"].StageName
+    BF2 = "BF " + st.session_state["BF2"].StageName
+    if BF1 != "BF none":
+        st.sidebar.button(BF1, on_click = change_BFinit, args = [st.session_state["BF1"]])
+    if BF2 != "BF none":
+        st.sidebar.button(BF2, on_click = change_BFinit, args = [st.session_state["BF2"]])
 
 def buy_ShopItem(cnt, x):
     if st.session_state["Player"].gold < 20:
@@ -47,13 +55,17 @@ def buy_ShopItem(cnt, x):
     #st.session_state["page_control"] = 1
 
 def Town():
+    st.session_state["Player"].CalcBattleStatus
+    st.sidebar.header("BF 1.2")
     stM.DispPStatus()
-    st.write("Into Town")
+    st.subheader("Town")
     Town_command()
 
 def Shop():
+    st.session_state["Player"].CalcBattleStatus
+    st.sidebar.header("BF 1.2")
     stM.DispPStatus()
-    st.write("Into Shop")
+    st.subheader("Equipment Shop")
     st.write("All item's price are 20 gold.")
     if st.session_state["ShopList"] == []:
         st.write("There is no line-up.")
@@ -87,6 +99,7 @@ def Enchant_Weapon():
         st.session_state["Player"].Equip(st.session_state["Player"].Weapon, st.session_state["Player"].Armor, st.session_state["Player"].Accesory)
     else:
         st.write("You have not enogh money!")
+    st.sidebar.header("BF 1.2")
     stM.DispPStatus()
     st.button("Return", on_click = stM.change_Enchant)
 
@@ -104,6 +117,7 @@ def Enchant_Armor():
         st.session_state["Player"].Equip(st.session_state["Player"].Weapon, st.session_state["Player"].Armor, st.session_state["Player"].Accesory)
     else:
         st.write("You have not enogh money!")
+    st.sidebar.header("BF 1.2")
     stM.DispPStatus()
     st.button("Return", on_click = stM.change_Enchant)
 
@@ -114,8 +128,10 @@ def change_Enchant_Armor():
     st.session_state["page_control"] = 22
 
 def Enchant():
+    st.session_state["Player"].CalcBattleStatus
+    st.sidebar.header("BF 1.2")
     stM.DispPStatus()
-    st.write("Into Enchant Workshop")    
+    st.subheader("Enchant Workshop")    
     st.write("Select Enchant for ")
     WVal = st.session_state["Player"].Weapon.enum
     if WVal > 4:
@@ -187,6 +203,7 @@ def AddSlot_Weapon():
         st.session_state["Player"].Weapon.AddSlot()
     else:
         st.write("You have not enogh gold!")
+    st.sidebar.header("BF 1.2")
     stM.DispPStatus()
     st.button("Return", on_click = ca)
 
@@ -199,6 +216,7 @@ def AddSlot_Armor():
         st.session_state["Player"].Armor.AddSlot()
     else:
         st.write("You have not enogh gold!")
+    st.sidebar.header("BF 1.2")
     stM.DispPStatus()
     st.button("Return", on_click = ca)
 
@@ -209,11 +227,44 @@ def change_AddSlot_Armor():
     st.session_state["page_control"] = 32
 
 def AddSlot():
+    st.session_state["Player"].CalcBattleStatus
+    st.sidebar.header("BF 1.2")
     stM.DispPStatus()
-    st.write("Into AddSlot Workshop") 
+    st.subheader("AddSlot Workshop") 
     st.write("Max Equip Slot is 1.")
     st.write("Add Slot cost is 200 gold.")    
     st.write("Select Enchant for ") 
     st.button("Weapon", on_click = change_AddSlot_Weapon)
     st.button("Armor", on_click = change_AddSlot_Armor)
+    st.button("Return", on_click = stM.change_Town)
+
+def ElderAdvice():
+    st.sidebar.header("BF 1.2")
+    stM.DispPStatus()
+    st.subheader("Elder's Advice") 
+    if st.session_state["Player"].Lv == 1:
+        st.write("Welcome to probability forest!  \n \
+                  First, you must be get 2d8 - 3d10 Dagger or ShortSword.  \n \
+                  Second, you must check frequently the ShopItems. \n \
+                  ShopItems lineup increase with your adventure deeper.  \n \
+                  DarkWood's Boss <KingChar> is strong.  \n \
+                  But you use a skill <Curse>, you can strike <KingChar>!")
+    elif st.session_state["Player"].Lv == 2:
+        st.write("In DoomsCave, it appear that <TrickFlower>.  \n \
+                  Careful the <TrickFlower>'s skills.  \n \
+                  If you dead, don't give up.  \n \
+                  First, prepare the equipment at the Shop,  \n \
+                  and collect Equipment in first half of Battle Stage!")
+    elif st.session_state["Player"].Lv == 3:
+        st.write("RuinFortless's Boss <HellChar> has a strongest skill <Swings>.  \n \
+                  But, <HellChar>'s HP is Lower,  \n \
+                  You must take an agressive offence, rush! rush! rush!")
+    elif st.session_state["Player"].Lv == 4:
+        st.write("EvilCastle's Boss <LordChar> use Magic Fire attack's.  \n \
+                  You must prepare those magic attack's.")
+    elif st.session_state["Player"].Lv == 5:
+        st.write("Abyss's Boss <AbyssChar> has a skill <Curse>.  \n \
+                  You must think about Strategy those attack.")
+    else:
+        st.write("You did a Great job!")
     st.button("Return", on_click = stM.change_Town)

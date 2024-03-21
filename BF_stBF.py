@@ -1,32 +1,7 @@
 import streamlit as st
 import BF_ObjectDef as OB
 import PCommand as PC
-import BF_stMain as stMain
-
-def DispBFinfo():
-    Stage = st.session_state["BF"].StageName
-    cnt = st.session_state["BF"].cnt
-    st.write(f"Stage: {Stage} <{cnt}>")    
-
-def BFResult():
-    DispBFinfo()
-    stMain.DispEStatus()
-    BF_DispPlayerComand()
-    st.write(st.session_state["BFResult"])
-
-def BFResult_PlayerWin():
-    DispBFinfo()
-    stMain.DispEStatus()
-    BF_DispPlayerStatus()
-    st.markdown(st.session_state["BFResult"]) 
-    st.button("OK", key = "OK_BF01", on_click = change_BFBattleEnd)   
-
-def BFResult_PlayerLose():
-    DispBFinfo()
-    stMain.DispEStatus()
-    BF_DispPlayerStatus()
-    st.markdown(st.session_state["BFResult"]) 
-    st.button("OK", key = "OK_BF01", on_click = change_Deadend)       
+import BF_stMain as stMain 
 
 def change_BFBattleEnd():
     Item = PC.GetShopItem(st.session_state["Enemy"].Enemy.Rew, \
@@ -40,7 +15,13 @@ def change_Deadend():
     st.session_state["page_control"] = 0      
 
 def LevelUP():
-    LV1 = OB.DiceRoll(1, 4)
+    if st.session_state["Player"].Lv == 4:
+        HPVal = 1
+    elif st.session_state["Player"].Lv > 4:
+        HPVal = 2
+    else:
+        HPVal = 0
+    LV1 = OB.DiceRoll(1, 4 + HPVal)
     LV2 = OB.DiceRoll(1, 2)
     st.session_state["Player"].LevelUP(LV1, LV2)
     return f"Level Up! HP +{LV1}, MP +{LV2}"
@@ -141,25 +122,95 @@ def BF_Curse():
     BattleResult(text1)
 
 def BF_Barrier():
-    text1 = st.session_state["Player"].Battle_Barrier(5, 30)
+    text1 = st.session_state["Player"].Battle_Barrier(5, 50)
     BattleResult(text1)
 
-def BF_DispPlayerStatus():
-    stMain.DispPStatus()
+def DispBFinfo():
+    Stage = st.session_state["BF"].StageName
+    cnt = st.session_state["BF"].cnt
+    st.subheader(f"Stage: {Stage} <{cnt}>")
 
-def BF_DispPlayerComand():
-    stMain.DispPStatus()
-    st.sidebar.button("1.Attack", on_click = BF_Attack)
-    st.sidebar.button("2.WAttack(4)", on_click = BF_WAttack)
-    st.sidebar.button("3.Healing(6)", on_click = BF_Healing)
-    st.sidebar.button("4.FireBall(8)", on_click = BF_FireBall)
-    st.sidebar.button("5.Curse(12)", on_click = BF_Curse)
-    st.sidebar.button("5.Barrier(5)", on_click = BF_Barrier)
-    st.sidebar.button("7.Escape to Town", on_click = stMain.change_Town)
+def BFResult():
+    #DispBFinfo()
+    #stMain.DispEStatus()
+    #BF_DispPlayerComand()
+    DispBattleHP()
+    DispPlayerComand2()
+    st.write(st.session_state["BFResult"])
+
+def BFResult_PlayerWin():
+    #DispBFinfo()
+    #stMain.DispEStatus()
+    #BF_DispPlayerStatus()
+    DispBattleHP()
+    #DispPlayerComand2()
+    st.divider()
+    st.markdown(st.session_state["BFResult"]) 
+    st.button("--------- OK ----------", key = "OK_BF01", on_click = change_BFBattleEnd)   
+
+def BFResult_PlayerLose():
+    #DispBFinfo()
+    #stMain.DispEStatus()
+    #BF_DispPlayerStatus()
+    DispBattleHP()
+    #DispPlayerComand2()
+    st.divider()
+    st.markdown(st.session_state["BFResult"]) 
+    st.button("--------- OK ----------", key = "OK_BF01", on_click = change_Deadend)      
+
+def BF_DispPlayerStatus():
+    st.sidebar.header("BF 1.2")
+    text = PC.DispPlayerStatus(st.session_state["Player"], True)
+    st.sidebar.markdown(text)
+
+def DispBattleHP():
+    DispBFinfo()
+    text1 = PC.DispEnemyStatus(st.session_state["Enemy"].Enemy, False)
+    text2 = PC.DispPlayerStatus(st.session_state["Player"], False)
+    Pname = st.session_state["Player"].name
+    if st.session_state["Player"].HP < (st.session_state["Player"].MaxHP / 5):
+        PHP = st.session_state["Player"].HP
+        PHP = f":red[{PHP}]"
+        PMP = st.session_state["Player"].MP
+    else:
+        PHP = st.session_state["Player"].HP
+        PMP = st.session_state["Player"].MP
+    Ename = st.session_state["Enemy"].Enemy.name
+    if st.session_state["Enemy"].Enemy.HP < (st.session_state["Enemy"].Enemy.MaxHP / 5):
+        EHP = st.session_state["Enemy"].Enemy.HP
+        EHP = f":red[{EHP}]"
+        EMP = st.session_state["Enemy"].Enemy.MP
+    else:
+        EHP = st.session_state["Enemy"].Enemy.HP
+        EMP = st.session_state["Enemy"].Enemy.MP
+    col5, col6= st.columns([1,1])
+    with col5:
+        st.markdown(f"#### {Pname} : {PHP} / {PMP} ####")
+        st.markdown(text2) 
+    with col6:
+        st.markdown(f"#### {Ename} : {EHP} / {EMP} ####") 
+        st.markdown(text1)
+
+def DispPlayerComand2():   
+    col1, col2, col3, col4 = st.columns([1,1,1,1])
+    with col1:
+        st.button("----- Attack -----", on_click = BF_Attack)   
+        st.button("--- FireBall(8) ---", on_click = BF_FireBall)
+    with col2:
+        st.button("--- WAttack(4) ---", on_click = BF_WAttack)
+        st.button("--- Curse(12)---", on_click = BF_Curse)  
+    with col3:
+        st.button("--- Healing(6) ---", on_click = BF_Healing)
+    with col4:
+        st.button("--- Barrier(5) ---", on_click = BF_Barrier)
+        st.button("----- Escape -----", on_click = stMain.change_Town)
+    st.divider()
 
 def BFinit():
     st.session_state["BF"].cnt += 1
     st.session_state.AuraFlag = True
+    st.session_state["Player"].CalcBattleStatus()
+    #BF_DispPlayerComand()
     if st.session_state["BF"].cnt > 10:
         SName = st.session_state["BF"].StageName
         text = ""
@@ -171,22 +222,29 @@ def BFinit():
             if st.session_state["BF"].StageName == "Abyss":
                 text = "Conglaturations!! "
             st.session_state["Player"].Lv += 1
-            st.write(f"** {text}Clear the {SName} **")
+            st.subheader(f"** {text}Clear the {SName} **")
             st.session_state["Player"].Accesory.AddSlot()
             getgold = int(OB.DiceRoll(12,20) * st.session_state["BF"].Mag)
             st.session_state["Player"].gold += getgold
-            st.write("Accesory Slot +1!")        
+            if st.session_state["BF"].StageName != "Abyss":
+                st.write("Accesory Slot +1!")        
             st.write(f"Get {getgold} gold!")  
         else:
             st.write(f"Clear the {SName}")
         st.button("Return Town", on_click = stMain.change_Town)
     else:
         st.session_state["Enemy"] = OB.EnemyStatus(st.session_state["BF"].StageName, st.session_state["BF"].Mag, st.session_state["BF"].cnt)
-        DispBFinfo()
-        stMain.DispEStatus()
-        BF_DispPlayerComand()
+        #stMain.DispEStatus()
+        #DispBFinfo()
         EnemyName = st.session_state["Enemy"].Enemy.name
+        #DispBattleHP()
+        DispBattleHP()
+        DispPlayerComand2()
         st.write(f"{EnemyName} is appeared!!")
+
+def DispGetItem(text):
+    text = f"#### {text} ####"
+    st.markdown(f"{text}")    
 
 def Weapon_change():
     NewWeaponName = st.session_state["NewWeapon"].name
@@ -231,9 +289,9 @@ def Drop_Scroll():
     #st.session_state["page_control"] = 55
 
 def SelectWeapon():
-    BF_DispPlayerStatus()
-    #DispBFinfo()    
-    st.write("You get a Weapon!")
+    BF_DispPlayerStatus() 
+    #DispBFinfo()
+    DispGetItem("You get a Weapon!")
     text1 = PC.DispWeaponStatus("New ; ", st.session_state["NewWeapon"], st.session_state["NewWeapon"].name)
     text2 = PC.DispWeaponStatus("Now ; ", st.session_state["Player"].Weapon, st.session_state["Player"].Equips["Weapon"])
     st.write(text1)
@@ -252,7 +310,7 @@ def GetWeapon():
 def SelectArmor():
     BF_DispPlayerStatus()
     #DispBFinfo()
-    st.write("You get a Armor!")
+    DispGetItem("You get a Armor!")
     text3 = PC.DispArmorStatus("New ; ", st.session_state["NewArmor"], st.session_state["NewArmor"].name)
     text4 = PC.DispArmorStatus("Now ; ", st.session_state["Player"].Armor, st.session_state["Player"].Equips["Armor"])
     st.write(text3)
@@ -271,8 +329,8 @@ def GetArmor():
 def SelectScroll():
     BF_DispPlayerStatus()
     #DispBFinfo()
-    Scrollname = st.session_state["NewScroll"].status
-    st.write(f"You get a Scroll of {Scrollname}!")
+    Scrollname = st.session_state["NewScroll"].name
+    DispGetItem(f"You get a {Scrollname}!")
     st.button("Enchant Weapon", key = "Enchant Weapon", on_click=Scroll_Weapon, args=[st.session_state["NewScroll"].status])
     st.button("Enchant Armor", key = "Enchant Armor", on_click=Scroll_Armor, args=[st.session_state["NewScroll"].status])
     st.button("Enchant Accesory", key = "Enchant Accesory", on_click=Scroll_Accesory, args=[st.session_state["NewScroll"].status])
@@ -320,7 +378,7 @@ def Crystal_Weapon(page_control):
 
 def Enchant_Crystal_Armor(x, status):
     st.session_state["Player"].Armor.AddInstatus(x, status)
-    st.session_state["Player"].Equip(st.session_state["Player"].Armor, st.session_state["Player"].Armor, st.session_state["Player"].Accesory) 
+    st.session_state["Player"].Equip(st.session_state["Player"].Weapon, st.session_state["Player"].Armor, st.session_state["Player"].Accesory) 
 
 def Crystal_Armor(page_control):
     BF_DispPlayerStatus()
@@ -349,16 +407,15 @@ def Crystal_Accesory(page_control):
 def Drop_Crystal(BFFlag):
     #st.write("Drop Crystal!")
     if BFFlag == True:
-        st.session_state["page_control"] = 50
+        st.session_state["page_control"] = 5
     else:
         st.session_state["page_control"] = 1
-    #st.session_state["page_control"] = 50
 
 def SelectCrystal(BFFlag):
     BF_DispPlayerStatus()
     #DispBFinfo()
-    Crystalname = st.session_state["NewCrystal"].status
-    st.write(f"You get a Crystal of {Crystalname}!")
+    Crystalname = st.session_state["NewCrystal"].name
+    DispGetItem(f"You get a {Crystalname}!")
     if st.session_state["Player"].Weapon.slot > 0:
         if st.session_state["Player"].Armor.slot > 0:
             st.button("Enchant Weapon", key = "Enchant Weapon", on_click=change_Crystal_Weapon, args=[BFFlag])

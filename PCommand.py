@@ -1,6 +1,6 @@
 import BF_ObjectDef as OB
 
-def DispPlayerStatus(Player):
+def DispPlayerStatus(Player, Flag):
     strval_1 = Player.Equips["Weapon"]
     strval_2 = Player.Equips["Armor"]
     strval_3 = Player.Equips["Accesory"]
@@ -47,14 +47,17 @@ def DispPlayerStatus(Player):
         Skills = "none"
     #print(f"  <{Player.name} Lv{Player.Lv} : {Player.HP} / {Player.MP}> {STR}{INT}{VIT}{MGR}{PS}")
     #print(f"    *{strval_1} : {Player.Atk1}d{Player.Atk2}{Atk3val} {WepinstatusVal} *{strval_2} : {Player.Armor.def1}{def2val},{Player.MGR} {ArminstatusVal} *{strval_3} : {AccinstatusVal} {Player.gold}gold")
-    t0 = f"{Player.name} : {Player.HP} / {Player.MP} {Player.gold}gold "
+    if Flag == True:
+        t0 = f"{Player.name} : {Player.HP} / {Player.MP} {Player.gold}gold  \n"
+    else:
+        t0 = ""
     t1 = f"Skills : {Skills}"
     t2 = f"*{strval_1} : {Player.Atk1}d{Player.Atk2}{Atk3val} {WepinstatusVal}"
     t3 = f"*{strval_2} : {Player.Armor.def1}{def2val},{Player.MGR} {ArminstatusVal}"
     t4 = f"*{strval_3} : {AccinstatusVal}"
-    return (t0 + "  \n" + t1 + "  \n" + t2 + "  \n" + t3 + "  \n" + t4)
+    return (t0 + t1 + "  \n" + t2 + "  \n" + t3 + "  \n" + t4)
 
-def DispEnemyStatus(Enemy):
+def DispEnemyStatus(Enemy, Flag):
     if Enemy.STR > 0:
         STR = "STR:" + str(Enemy.STR) + " "
     else:
@@ -81,11 +84,15 @@ def DispEnemyStatus(Enemy):
         Skills = "none"
     #print(f"  <{Enemy.name} : {Enemy.HP} / {Enemy.MP}> {STR}{INT}{VIT}{MGR}{PS}")
     #print(f"    *Weapon : {Enemy.Atk1}d{Enemy.Atk2} {Atk3val} *Armor : {Enemy.Def},{Enemy.MGR}")
-    t0 = f"{Enemy.name} {Enemy.HP} / {Enemy.MP}"
+    if Flag == True:
+        t0 = f"{Enemy.name} {Enemy.HP} / {Enemy.MP}  \n"
+    else:
+        t0 = ""
     t2 = f"Skills : {Skills}"
     t3 = f"*Weapon : {Enemy.Atk1}d{Enemy.Atk2} {Atk3val}"
     t4 = f"*Armor : {Enemy.Def},{Enemy.MGR}"
-    return (t0 + "  \n" + t2 + "  \n" + t3 + "  \n" + t4)
+    #return (t0 + t2 + "  \n" + t3 + "  \n" + t4 + "  \n" + "*none")
+    return (t0 + t2 + "  \n" + t3 + "  \n" + t4)
 
 def DispResult(Player, Enemy):
     if Player.HP < 1:
@@ -140,18 +147,18 @@ def MakeGetWeapon(cnt, Player):
     elif Sel == 2:
         NewWeapon = OB.WeaponStatus("Shurikens!", 1, (cnt+2) * 10, 0, 1, "", ["VIT20"])
     elif Sel == 3:
-        NewWeapon = OB.WeaponStatus("Exculliber!", OB.DiceRoll(1, ((cnt+12)//3)+2), OB.DiceRoll(1, cnt+8+6), 0, 2, "", ["INT25", "MGR25"])
+        NewWeapon = OB.WeaponStatus("Exculliber!", OB.DiceRoll(1, ((cnt+8)//3)+2), OB.DiceRoll(2, cnt+6+6), 0, 2, "", ["INT25", "MGR25"])
     else:
         Atk1 = OB.DiceRoll(1, (cnt//3)+2)
         Atk2 = OB.DiceRoll(1, cnt+6)
         Score = int(Atk1 * Atk2)
-        if Score > 280:
+        if Score > 180:
             name = "BasterdSword"
-        elif Score > 200:
+        elif Score > 140:
             name = "GreatSword"
-        elif Score > 120:
+        elif Score > 100:
             name = "BloadSword"
-        elif Score > 64:
+        elif Score > 60:
             name = "LongSword"
         elif Score > 19:
             name = "ShortSword"
@@ -184,17 +191,17 @@ def SelectArmor(Player, NewArmor):
 def MakeGetArmor(cnt, Player):
     Sel = OB.DiceRoll(1,1200)
     if Sel == 1:
-        NewArmor = OB.ArmorStatus("BattleSuite!", int((cnt+10)*(Player.Lv*1.5)), 0, 1, "", ["VIT20"])
+        NewArmor = OB.ArmorStatus("BattleSuite!", int((cnt+6)*(Player.Lv*1.5)), 0, 1, "", ["VIT20"])
     elif Sel == 2:
-        NewArmor = OB.ArmorStatus("O-GUSOKU!", int((cnt+10)*(Player.Lv*2)), 25, 1, "", ["STR25"])
+        NewArmor = OB.ArmorStatus("O-GUSOKU!", int((cnt+6)*(Player.Lv*2)), 25, 1, "", ["STR25"])
     elif Sel == 3:
-        NewArmor = OB.ArmorStatus("GoldCloss!",OB.DiceRoll(((cnt+12)//4)+1, cnt+2+8), 25, 2, "", ["STR25","INT25"])
+        NewArmor = OB.ArmorStatus("GoldCloss!",OB.DiceRoll(((cnt+8)//4)+1, cnt+2+8), 25, 2, "", ["STR25","INT25"])
     else:
         defv = OB.DiceRoll((cnt//4)+1, cnt+2)
         MGR = OB.DiceRoll(1,25)
-        if defv > 120:
+        if defv > 140:
             name = "FullPlateArmor"
-        elif defv > 96:
+        elif defv > 100:
             name = "PlateArmor"
         elif defv > 64:
             name = "ScaleArmor"
@@ -262,12 +269,12 @@ def MakeGetScroll(StageStr, Sel):
     return NewScroll
 
 def GetScroll(Player, Rew, StageStr):
-    if StageStr == "TheAbyss":
+    if StageStr == "Abyss":
         det = 300 - int(Rew * 25)
     elif StageStr == "EvilCastle":
-        det = 400 - int(Rew * 25)
+        det = 350 - int(Rew * 25)
     else:
-        det = 450 - int(Rew * 25)
+        det = 400 - int(Rew * 25)
     Sel = OB.DiceRoll(1, det)
     NewScroll = MakeGetScroll(StageStr, Sel)
     return NewScroll
@@ -360,10 +367,10 @@ def MakeGetCrystal(Player, StageStr, Sel):
     return NewCrystal
 
 def GetCrystal(Player, Rew, StageStr):
-    if StageStr == "TheAbyss":
-        det = 125 - int(Rew * 20)
+    if StageStr == "Abyss":
+        det = 150 - int(Rew * 20)
     elif StageStr == "EvilCastle":
-        det = 165 - int(Rew * 20)
+        det = 175 - int(Rew * 20)
     else:
         det = 200 - int(Rew * 20)
     Sel = OB.DiceRoll(1, det)
@@ -372,10 +379,10 @@ def GetCrystal(Player, Rew, StageStr):
     #SelectCrystal(Player, NewCrystal)
 
 def GetShopItem(MonRew, Rew, Player, StageStr):
-    if StageStr == "TheAbyss":
-        det = 125 - (MonRew * 12)
+    if StageStr == "Abyss":
+        det = 100 - (MonRew * 12)
     elif StageStr == "EvilCastle":
-        det = 165 - (MonRew * 12)
+        det = 150 - (MonRew * 12)
     else:
         det = 200 - (MonRew * 12)
     Sel1 = OB.DiceRoll(1,det)

@@ -24,15 +24,19 @@ class CharacterStatus():
         self.gold = gold
 
     def Battle_Attack(self, Enemy, Flag):
+        Sel = DiceRoll(1, 10)
         text = ""
         if Flag == True and "Aura" in Enemy.Status:
             text = "AuraGuard first attack!"
             return text
+        elif Sel == 1 and "Aura" in Enemy.Status:
+            text = "AuraGuard!"
+            return text    
         AttackVal = DiceRoll(self.Atk1, self.Atk2) + self.Atk3
         CritMsg = ""
         if "Critical" in self.Status:
-            Sel = DiceRoll(1,10)
-            if Sel > 8:
+            Sel = DiceRoll(1,4)
+            if Sel == 1:
                 AttackVal = AttackVal * 2
                 CritMsg = "Critical "
         DmgVal = int((AttackVal - Enemy.Def) * (1 - Enemy.VIT/100))
@@ -129,7 +133,7 @@ class CharacterStatus():
             self.MGR += BNum
             if self.MGR > 100:
                 self.MGR = 100
-            text = f"{self.name} Cast a Barrier!"
+            text = f"{self.name} Cast a Barrier! MGR is {BNum} up!"
         return text  
 
 class PlayerStatus(CharacterStatus):
@@ -348,7 +352,7 @@ class EnemyStatus():
             Atk1 = int(4 + (Mag - 1))
             Atk2 = int((DiceRoll(2,8)  + cnt ) * Mag)
             Atk3 = int(5 * Mag)
-            Defval = int(((DiceRoll(1,(Mag+5))  + (cnt//2) + 1)) * Mag)
+            Defval = int(((DiceRoll(2,(Mag+4))  + (cnt//2) + 1)) * Mag)
             STR = 25
             INT = 0
             VIT = 25
@@ -365,7 +369,7 @@ class EnemyStatus():
             Atk1 = int(4 + int((Mag - 1)))
             Atk2 = int((DiceRoll(2,8) + cnt ) * Mag)
             Atk3 = int(5 * Mag)
-            Defval = int(((DiceRoll(2,(Mag+2)) + (cnt//2) + 1)) * Mag)
+            Defval = int(((DiceRoll(4,(Mag+8)) + (cnt//2) + 1)) * Mag)
             STR = 0
             INT = 0
             VIT = 20
@@ -399,7 +403,7 @@ class EnemyStatus():
             Atk1 = int(4 + int((Mag - 1)))
             Atk2 = int((DiceRoll(2,8) + cnt ) * Mag)
             Atk3 = int(5 * Mag)
-            Defval = int(((DiceRoll(2,Mag+2) + (cnt//2) + 1)) * Mag)
+            Defval = int(((DiceRoll(2,Mag+6) + (cnt//2) + 1)) * Mag)
             STR = 0
             INT = 25
             VIT = 0
@@ -413,10 +417,10 @@ class EnemyStatus():
             Lv = int(2 + Mag)
             HP = int((60 + DiceRoll(cnt, 16)) * Mag)
             MP = 40
-            Atk1 = int(3 + int((Mag - 1)))
+            Atk1 = int(4 + int((Mag - 1)))
             Atk2 = int((DiceRoll(2,8) + cnt ) * Mag)
             Atk3 = int(5 * Mag)
-            Defval = int(((DiceRoll(2,(Mag+2)) + (cnt//2) + 1)) * Mag)
+            Defval = int(((DiceRoll(2,(Mag+8)) + (cnt//2) + 1)) * Mag)
             STR = 0
             INT = 30
             VIT = 50
@@ -433,7 +437,7 @@ class EnemyStatus():
             Atk1 = int(3 + (Mag - 1))
             Atk2 = int((DiceRoll(2,8)  + cnt ) * Mag)
             Atk3 = int(cnt//3 * Mag)
-            Defval = int(((DiceRoll(1,(Mag+5))  + (cnt//2) + 1)) * Mag)
+            Defval = int(((DiceRoll(1,(Mag+8))  + (cnt//2) + 1)) * Mag)
             STR = 0
             INT = 0
             VIT = 0
@@ -450,13 +454,13 @@ class EnemyStatus():
             Atk1 = int(3 + (Mag - 1))
             Atk2 = int((DiceRoll(2,8)  + cnt ) * Mag)
             Atk3 = int(cnt//4 * Mag)
-            Defval = int(((DiceRoll(1,(Mag+2))  + (cnt//2) + 1)) * Mag)
+            Defval = int(((DiceRoll(1,Mag+8)  + (cnt//2) + 1)) * Mag)
             STR = 0
             INT = 0
             VIT = 0
             MGR = 0
             Status = []         
-            gold = int(DiceRoll(1, 8) * Mag)
+            gold = int(DiceRoll(1, 10) * Mag)
             MonRew = 1            
         elif Sel > 60 and StageName != "DarkWood":
             #TrickFlower
@@ -467,7 +471,7 @@ class EnemyStatus():
             Atk1 = int(2 + (Mag - 1))
             Atk2 = int((DiceRoll(2,6) + cnt) * Mag)
             Atk3 = int(cnt//5 * Mag)
-            Defval = int(((DiceRoll(1,Mag+1) + (cnt//2))) * Mag)
+            Defval = int(((DiceRoll(1,4+Mag) + (cnt//2))) * Mag)
             STR = 0
             INT = 0
             VIT = 0
@@ -493,13 +497,13 @@ class EnemyStatus():
             Atk1 = int(2 + (Mag - 1))
             Atk2 = int((DiceRoll(2,4) + cnt) * Mag)
             Atk3 = int(cnt//5 * Mag)
-            Defval = int(((DiceRoll(1,4) + (cnt//2))) * Mag)
+            Defval = int(((DiceRoll(1,4+Mag) + (cnt//2))) * Mag)
             STR = 0
             INT = 0
             VIT = 0
             MGR = 0
             Status = []
-            gold = int(DiceRoll(1,4) * Mag)
+            gold = int(DiceRoll(1,6) * Mag)
             MonRew = 0         
         elif Sel > 5:
             #HillChar
@@ -510,7 +514,7 @@ class EnemyStatus():
             Atk1 = int(2 + (Mag - 1))
             Atk2 = int((DiceRoll(2,4) + cnt) * Mag)
             Atk3 = int(cnt//5 * Mag)
-            Defval = int(((DiceRoll(1,4) + (cnt//2))) * Mag)
+            Defval = int(((DiceRoll(1,4+Mag) + (cnt//2))) * Mag)
             STR = 0
             INT = 0
             VIT = 0
@@ -527,7 +531,10 @@ class EnemyStatus():
             Atk1 = 1
             Atk2 = int(40 * Mag)
             Atk3 = 0
-            Defval = int(10 * Mag)
+            if StageName != "DarkWood":
+                Defval = int(30 * (Mag-1))
+            else:
+                Defval = 10
             STR = 0
             INT = 0
             VIT = 0
