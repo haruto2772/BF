@@ -143,9 +143,9 @@ def SelectWeapon(Player, NewWeapon):
 def MakeGetWeapon(cnt, Player):
     Sel = OB.DiceRoll(1,1200)
     if  Sel == 1:
-        NewWeapon = OB.WeaponStatus("MurasameBlade!", int((cnt+2)*1.2), 10, 0, 1, "", ["INT25"])
+        NewWeapon = OB.WeaponStatus("MurasameBlade!", int((cnt+2)), 10, 0, 1, "", ["INT25"])
     elif Sel == 2:
-        NewWeapon = OB.WeaponStatus("Shurikens!", 1, (cnt+2) * 10, 0, 1, "", ["VIT20"])
+        NewWeapon = OB.WeaponStatus("Shurikens!", 1, (cnt+4) * 10, 0, 1, "", ["VIT20"])
     elif Sel == 3:
         NewWeapon = OB.WeaponStatus("Exculliber!", OB.DiceRoll(1, ((cnt+8)//3)+2), OB.DiceRoll(2, cnt+6+6), 0, 2, "", ["INT25", "MGR25"])
     else:
@@ -191,7 +191,7 @@ def SelectArmor(Player, NewArmor):
 def MakeGetArmor(cnt, Player):
     Sel = OB.DiceRoll(1,1200)
     if Sel == 1:
-        NewArmor = OB.ArmorStatus("BattleSuite!", int((cnt+6)*(Player.Lv*1.5)), 0, 1, "", ["VIT20"])
+        NewArmor = OB.ArmorStatus("BattleSuite!", int((cnt+6)*(Player.Lv*1.6)), 0, 1, "", ["VIT20"])
     elif Sel == 2:
         NewArmor = OB.ArmorStatus("O-GUSOKU!", int((cnt+6)*(Player.Lv*2)), 25, 1, "", ["STR25"])
     elif Sel == 3:
@@ -199,9 +199,9 @@ def MakeGetArmor(cnt, Player):
     else:
         defv = OB.DiceRoll((cnt//4)+1, cnt+2)
         MGR = OB.DiceRoll(1,25)
-        if defv > 140:
+        if defv > 120:
             name = "FullPlateArmor"
-        elif defv > 100:
+        elif defv > 96:
             name = "PlateArmor"
         elif defv > 64:
             name = "ScaleArmor"
@@ -252,16 +252,16 @@ def MakeGetScroll(StageStr, Sel):
     elif Sel < 3:
         Sta = "Aura"
     elif Sel < 4:
-        Sta = "Power"
-    elif Sel < 5:
-        Sta = "Critical"
-    elif Sel < 7:
-        Sta = "Fire"
-    elif Sel < 9:
         Sta = "Curse"
-    elif Sel < 13:
+    elif Sel < 6:
+        Sta = "Critical"
+    elif Sel < 8:
+        Sta = "Power"
+    elif Sel < 10:
+        Sta = "Fire"
+    elif Sel < 14:
         Sta = "Mana"
-    elif Sel < 17:
+    elif Sel < 19:
         Sta = "Heal"
     else:
         Sta = "none"
@@ -368,9 +368,9 @@ def MakeGetCrystal(Player, StageStr, Sel):
 
 def GetCrystal(Player, Rew, StageStr):
     if StageStr == "Abyss":
-        det = 150 - int(Rew * 20)
+        det = 100 - int(Rew * 20)
     elif StageStr == "EvilCastle":
-        det = 175 - int(Rew * 20)
+        det = 150 - int(Rew * 20)
     else:
         det = 200 - int(Rew * 20)
     Sel = OB.DiceRoll(1, det)
@@ -387,10 +387,10 @@ def GetShopItem(MonRew, Rew, Player, StageStr):
         det = 200 - (MonRew * 12)
     Sel1 = OB.DiceRoll(1,det)
     if Sel1 < 2:
-        Sel2 = OB.DiceRoll(1, 16)
+        Sel2 = OB.DiceRoll(1, 18)
         Items = MakeGetScroll(StageStr, Sel2)
     elif Sel1 < 3:
-        Sel2 = OB.DiceRoll(1,4)
+        Sel2 = OB.DiceRoll(1, 4)
         Items = MakeGetCrystal(Player, StageStr, Sel2)
     elif Sel1 < int(det/2):
         Items = MakeGetWeapon(Rew, Player)

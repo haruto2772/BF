@@ -9,11 +9,6 @@ def PlayerDef():
     st.session_state["Player"] = OB.PlayerStatus(name, 1, 100, 30, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 20)
     st.session_state["page_control"] = 0
 
-def DispPStatus():
-    st.sidebar.header("BF 1.2")
-    text = PC.DispPlayerStatus(st.session_state["Player"], True)
-    st.sidebar.markdown(text)
-
 def change_Town():
     st.session_state["page_control"] = 0
 
@@ -112,8 +107,14 @@ elif ("page_control" in st.session_state and st.session_state["page_control"] ==
     stBF.BFResult_PlayerWin()
 elif ("page_control" in st.session_state and st.session_state["page_control"] == 58 ):
     stBF.BFResult_PlayerLose()
+elif ("page_control" in st.session_state and st.session_state["page_control"] == 6 ):
+    Town.Ending01()
+elif ("page_control" in st.session_state and st.session_state["page_control"] == 61 ):
+    Town.Ending02()
+elif ("page_control" in st.session_state and st.session_state["page_control"] == 62 ):
+    Town.Ending03()
 elif ("page_control" in st.session_state and st.session_state["page_control"] == 999 ):
-    DispPStatus()
+    st.write("error")
 else:
     name = st.text_input('Input Name', key = "inname", on_change = PlayerDef)
     st.session_state["ShopList"] = []
