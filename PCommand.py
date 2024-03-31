@@ -152,7 +152,11 @@ def MakeGetWeapon(cnt, Player):
         Atk1 = OB.DiceRoll(1, (cnt//3)+2)
         Atk2 = OB.DiceRoll(1, cnt+6)
         Score = int(Atk1 * Atk2)
-        if Score > 180:
+        if Score > 300:
+            name = "UltemasSword"
+        elif Score > 240:
+            name = "VorpalSword"
+        elif Score > 180:
             name = "BasterdSword"
         elif Score > 140:
             name = "GreatSword"
@@ -191,15 +195,19 @@ def SelectArmor(Player, NewArmor):
 def MakeGetArmor(cnt, Player):
     Sel = OB.DiceRoll(1,1200)
     if Sel == 1:
-        NewArmor = OB.ArmorStatus("BattleSuite!", int((cnt+6)*(Player.Lv*1.6)), 0, 1, "", ["VIT20"])
+        NewArmor = OB.ArmorStatus("BattleSuite!", int((cnt+6)*(Player.Lv*1.4)), 0, 1, "", ["VIT20"])
     elif Sel == 2:
-        NewArmor = OB.ArmorStatus("O-GUSOKU!", int((cnt+6)*(Player.Lv*2)), 25, 1, "", ["STR25"])
+        NewArmor = OB.ArmorStatus("O-GUSOKU!", int((cnt+6)*(Player.Lv*1.7)), 25, 1, "", ["STR25"])
     elif Sel == 3:
         NewArmor = OB.ArmorStatus("GoldCloss!",OB.DiceRoll(((cnt+8)//4)+1, cnt+2+8), 25, 2, "", ["STR25","INT25"])
     else:
         defv = OB.DiceRoll((cnt//4)+1, cnt+2)
         MGR = OB.DiceRoll(1,25)
-        if defv > 120:
+        if defv > 240:
+            name = "DoragriteArmor"
+        elif defv > 180:
+            name = "MakariteArmor"
+        elif defv > 120:
             name = "FullPlateArmor"
         elif defv > 96:
             name = "PlateArmor"
@@ -269,7 +277,7 @@ def MakeGetScroll(StageStr, Sel):
     return NewScroll
 
 def GetScroll(Player, Rew, StageStr):
-    if StageStr == "Abyss":
+    if StageStr == "Abyss" or StageStr == "ChaosePlane" or StageStr == "YAMATO":
         det = 300 - int(Rew * 25)
     elif StageStr == "EvilCastle":
         det = 350 - int(Rew * 25)
@@ -367,7 +375,7 @@ def MakeGetCrystal(Player, StageStr, Sel):
     return NewCrystal
 
 def GetCrystal(Player, Rew, StageStr):
-    if StageStr == "Abyss":
+    if StageStr == "Abyss" or StageStr == "ChaosePlane" or StageStr == "YAMATO":
         det = 100 - int(Rew * 20)
     elif StageStr == "EvilCastle":
         det = 150 - int(Rew * 20)
@@ -379,7 +387,7 @@ def GetCrystal(Player, Rew, StageStr):
     #SelectCrystal(Player, NewCrystal)
 
 def GetShopItem(MonRew, Rew, Player, StageStr):
-    if StageStr == "Abyss":
+    if StageStr == "Abyss" or StageStr == "ChaosePlane" or StageStr == "YAMATO":
         det = 100 - (MonRew * 12)
     elif StageStr == "EvilCastle":
         det = 150 - (MonRew * 12)

@@ -218,7 +218,9 @@ def BFinit():
             st.session_state["Player"].Lv == 2 and st.session_state["BF"].StageName == "DoomsCave" or \
             st.session_state["Player"].Lv == 3 and st.session_state["BF"].StageName == "RuinFortless" or \
             st.session_state["Player"].Lv == 4 and st.session_state["BF"].StageName == "EvilCastle" or \
-            st.session_state["Player"].Lv == 5 and st.session_state["BF"].StageName == "Abyss":
+            st.session_state["Player"].Lv == 5 and st.session_state["BF"].StageName == "Abyss" or \
+            st.session_state["Player"].Lv == 6 and st.session_state["BF"].StageName == "ChaosePlane" or \
+            st.session_state["Player"].Lv == 7 and st.session_state["BF"].StageName == "YAMATO":
             if st.session_state["BF"].StageName == "Abyss":
                 text = "Conglaturations!! "
             st.session_state["Player"].Lv += 1

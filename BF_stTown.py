@@ -125,9 +125,15 @@ def Enchant():
     st.subheader("Enchant Workshop")    
     st.write("Select Enchant for ")
     WVal = st.session_state["Player"].Weapon.enum
-    if WVal > 4:
+    if WVal > 6:
         Wcost = 9999
         WEVal = 0
+    elif WVal == 6:
+        Wcost = 1500
+        WEVal = OB.DiceRoll(6,8)
+    elif WVal == 5:
+        Wcost = 800
+        WEVal = OB.DiceRoll(5,8)
     elif WVal == 4:
         Wcost = 500
         WEVal = OB.DiceRoll(4,6)
@@ -144,10 +150,18 @@ def Enchant():
         Wcost = 20
         WEVal = OB.DiceRoll(1,4)
     AVal = st.session_state["Player"].Armor.enum
-    if AVal > 4:
+    if AVal > 6:
         Acost = 9999
         AEVal = 0
         MGRVal = 0
+    elif AVal == 6:
+        Acost = 1200
+        AEVal = OB.DiceRoll(6,8)
+        MGRVal = OB.DiceRoll(1, 4)
+    elif AVal == 5:
+        Acost = 800
+        AEVal = OB.DiceRoll(5,8)
+        MGRVal = OB.DiceRoll(1, 4)
     elif AVal == 4:
         Acost = 500
         AEVal = OB.DiceRoll(4,6)
@@ -183,7 +197,7 @@ def Enchant():
     st.button("Return", on_click = stM.change_Town)
 
 def AddSlot_Weapon():
-    if st.session_state["Player"].Weapon.slot > 0:
+    if st.session_state["Player"].Weapon.slot > 1:
         st.write("Your Weapon Slot is Max!")
     elif st.session_state["Player"].gold > 200:
         st.write("Add Slot Weapon +1!")
@@ -195,7 +209,7 @@ def AddSlot_Weapon():
     st.button("Return", on_click = ca)
 
 def AddSlot_Armor():
-    if st.session_state["Player"].Armor.slot > 0:
+    if st.session_state["Player"].Armor.slot > 1:
         st.write("Your Armor Slot is Max!")
     elif st.session_state["Player"].gold > 200:
         st.write("Add Slot Armor +1!")
@@ -215,9 +229,9 @@ def change_AddSlot_Armor():
 def AddSlot():
     Town_DispPStatus()
     st.subheader("AddSlot Workshop") 
-    st.write("Max Equip Slot is 1.")
-    st.write("Add Slot cost is 200 gold.")    
-    st.write("Select Enchant for ") 
+    st.write("Max Equip Slot is 2.")
+    st.write("AddSlot cost is 200 gold.")    
+    st.write("Select AddSlot for ") 
     st.button("Weapon", on_click = change_AddSlot_Weapon)
     st.button("Armor", on_click = change_AddSlot_Armor)
     st.button("Return", on_click = stM.change_Town)
@@ -259,8 +273,7 @@ def ElderAdvice():
                   You must think about Strategy those attack.")
     elif st.session_state["Player"].Lv == 6:
         st.button("老人の話を聞く", on_click = change_Ending01)
-        st.session_state["Player"].Lv = 7
-    elif st.session_state["Player"].Lv == 7:
+    elif st.session_state["Player"].Lv > 6:
         st.write("You did a Great job!")
     else:
         st.write("Elder error")

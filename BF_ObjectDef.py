@@ -112,12 +112,16 @@ class CharacterStatus():
             text = f"{self.name} MP is not enough!"
         else:
             self.MP -= RedM
-            Reduceval1 = int(DiceRoll(cur1_1, cur1_2) * (1 + (self.INT/100)) * (Lv * 0.8))
+            Reduceval1 = 0
+            for x in range(Lv):
+                Reduceval1 += int(DiceRoll(cur1_1, cur1_2) * (1 + (self.INT/100)) * 0.8) 
             if Enemy.Def < Reduceval1:
                 Enemy.Def = 0
             else:
                 Enemy.Def -= Reduceval1
-            Reduceval2 = int(DiceRoll(cur2_1, cur2_2) * (1 + (self.INT/100)) * (Lv * 0.8))        
+            Reduceval2 = 0
+            for x in range(Lv):
+                Reduceval2 += int(DiceRoll(cur2_1, cur2_2) * (1 + (self.INT/100)) *0.8)        
             if Enemy.Atk2 <= Reduceval2:
                 Enemy.Atk2 = 1
             else:
@@ -141,7 +145,18 @@ class PlayerStatus(CharacterStatus):
         CharacterStatus.__init__(self, name, Lv, HP, MP, Atk1, Atk2, Atk3, Def, STR, INT, VIT, MGR, Stat, Rew, gold)
         Weapon = WeaponStatus("Dagger", 2, 6, 0, 0, "", [])
         Armor = ArmorStatus("Cloth", 1, 0, 0, "", [])
-        Accesory = AccesoryStatus("Ring", 1, "", [''])
+        if "!3" in name:
+            Accesory = AccesoryStatus("Ring", 3, "", ['','',''])
+        elif "!4" in name:
+            Accesory = AccesoryStatus("Ring", 4, "", ['','','',''])
+        elif "!5" in name:
+            Accesory = AccesoryStatus("Ring", 5, "", ['','','','',''])
+        elif "!6" in name:
+            Accesory = AccesoryStatus("Ring", 6, "", ['','','','','',''])
+        elif "!7" in name:
+            Accesory = AccesoryStatus("Ring", 7, "", ['','','','','','',''])
+        else:
+            Accesory = AccesoryStatus("Ring", 1, "", [''])
         #Weapon = WeaponStatus("Dagger", 2, 6, 3, 1, "Fire", ["STR3"])
         #Armor = ArmorStatus("Cloth", 100, 30, 1, "Swings", ["INT5"])
         #Accesory = AccesoryStatus("Ring", 5, "Power", ["VIT10","MGR30","STR4","INT57",""])
@@ -352,7 +367,7 @@ class EnemyStatus():
             Atk1 = int(4 + (Mag - 1))
             Atk2 = int((DiceRoll(2,8)  + cnt ) * Mag)
             Atk3 = int(5 * Mag)
-            Defval = int(((DiceRoll(2,(Mag+4))  + (cnt//2) + 1)) * Mag)
+            Defval = int(((DiceRoll(2,int(Mag+4))  + (cnt//2) + 1)) * Mag)
             STR = 25
             INT = 0
             VIT = 25
@@ -369,7 +384,7 @@ class EnemyStatus():
             Atk1 = int(4 + int((Mag - 1)))
             Atk2 = int((DiceRoll(2,8) + cnt ) * Mag)
             Atk3 = int(5 * Mag)
-            Defval = int(((DiceRoll(4,(Mag+8)) + (cnt//2) + 1)) * Mag)
+            Defval = int(((DiceRoll(4,int(Mag+8)) + (cnt//2) + 1)) * Mag)
             STR = 0
             INT = 0
             VIT = 20
@@ -386,7 +401,7 @@ class EnemyStatus():
             Atk1 = int(3 + int((Mag - 1)))
             Atk2 = int((DiceRoll(2,8) + cnt ) * Mag * 0.8)
             Atk3 = int(5 * Mag)
-            Defval = int(((DiceRoll(2,(Mag+2)) + (cnt//2) + 1)) * Mag * 0.7)
+            Defval = int(((DiceRoll(2,int(Mag+2)) + (cnt//2) + 1)) * Mag * 0.7)
             STR = 0
             INT = 0
             VIT = 0
@@ -403,7 +418,7 @@ class EnemyStatus():
             Atk1 = int(4 + int((Mag - 1)))
             Atk2 = int((DiceRoll(2,8) + cnt ) * Mag)
             Atk3 = int(5 * Mag)
-            Defval = int(((DiceRoll(2,Mag+6) + (cnt//2) + 1)) * Mag)
+            Defval = int(((DiceRoll(2,int(Mag+6)) + (cnt//2) + 1)) * Mag)
             STR = 0
             INT = 25
             VIT = 0
@@ -413,19 +428,53 @@ class EnemyStatus():
             MonRew = 2
         elif StageName == "Abyss" and cnt == 10:
             #AbyssChar
-            name = "Abysschar(LastBoss)"
+            name = "AbyssChar(StageBoss)"
             Lv = int(2 + Mag)
             HP = int((60 + DiceRoll(cnt, 16)) * Mag)
             MP = 40
             Atk1 = int(4 + int((Mag - 1)))
             Atk2 = int((DiceRoll(2,8) + cnt ) * Mag)
             Atk3 = int(5 * Mag)
-            Defval = int(((DiceRoll(2,(Mag+8)) + (cnt//2) + 1)) * Mag)
+            Defval = int(((DiceRoll(2,int(Mag+8)) + (cnt//2) + 1)) * Mag)
             STR = 0
             INT = 30
             VIT = 50
             MGR = 0
             Status = ["Curse"]          
+            gold = int(DiceRoll(3, 6) * Mag)
+            MonRew = 2 
+        elif StageName == "ChaosePlane" and cnt == 10:
+            #ChaoseChar
+            name = "ChaoseChar(StageBoss)"
+            Lv = int(2 + Mag)
+            HP = int((60 + DiceRoll(cnt, 16)) * Mag)
+            MP = 40
+            Atk1 = int(4 + int((Mag - 1)))
+            Atk2 = int((DiceRoll(2,8) + cnt ) * Mag)
+            Atk3 = int(5 * Mag)
+            Defval = int(((DiceRoll(10,int(Mag+8)) + (cnt//2) + 1)) * Mag)
+            STR = 0
+            INT = 50
+            VIT = 50
+            MGR = 99
+            Status = ["Fire"]          
+            gold = int(DiceRoll(3, 6) * Mag)
+            MonRew = 2 
+        elif StageName == "YAMATO" and cnt == 10:
+            #BushidoChar
+            name = "BushidoChar(LastBoss)"
+            Lv = int(2 + Mag)
+            HP = int((60 + DiceRoll(cnt, 16)) * Mag)
+            MP = 40
+            Atk1 = int(4 + int((Mag - 1)))
+            Atk2 = int((DiceRoll(2,8) + cnt ) * Mag)
+            Atk3 = int(20 * Mag)
+            Defval = int(((DiceRoll(2,int(Mag+8)) + (cnt//2) + 1)) * Mag)
+            STR = 0
+            INT = 50
+            VIT = 75
+            MGR = 75
+            Status = ["Swings", "Critical", "Fire"]          
             gold = int(DiceRoll(3, 6) * Mag)
             MonRew = 2 
         elif cnt == 5:
@@ -437,7 +486,7 @@ class EnemyStatus():
             Atk1 = int(3 + (Mag - 1))
             Atk2 = int((DiceRoll(2,8)  + cnt ) * Mag)
             Atk3 = int(cnt//3 * Mag)
-            Defval = int(((DiceRoll(1,(Mag+8))  + (cnt//2) + 1)) * Mag)
+            Defval = int(((DiceRoll(1,int(Mag+8))  + (cnt//2) + 1)) * Mag)
             STR = 0
             INT = 0
             VIT = 0
@@ -454,7 +503,7 @@ class EnemyStatus():
             Atk1 = int(3 + (Mag - 1))
             Atk2 = int((DiceRoll(2,8)  + cnt ) * Mag)
             Atk3 = int(cnt//4 * Mag)
-            Defval = int(((DiceRoll(1,Mag+8)  + (cnt//2) + 1)) * Mag)
+            Defval = int(((DiceRoll(1,int(Mag+8))  + (cnt//2) + 1)) * Mag)
             STR = 0
             INT = 0
             VIT = 0
@@ -471,7 +520,7 @@ class EnemyStatus():
             Atk1 = int(2 + (Mag - 1))
             Atk2 = int((DiceRoll(2,6) + cnt) * Mag)
             Atk3 = int(cnt//5 * Mag)
-            Defval = int(((DiceRoll(1,4+Mag) + (cnt//2))) * Mag)
+            Defval = int(((DiceRoll(1,int(4+Mag)) + (cnt//2))) * Mag)
             STR = 0
             INT = 0
             VIT = 0
@@ -497,7 +546,7 @@ class EnemyStatus():
             Atk1 = int(2 + (Mag - 1))
             Atk2 = int((DiceRoll(2,4) + cnt) * Mag)
             Atk3 = int(cnt//5 * Mag)
-            Defval = int(((DiceRoll(1,4+Mag) + (cnt//2))) * Mag)
+            Defval = int(((DiceRoll(1,int(4+Mag)) + (cnt//2))) * Mag)
             STR = 0
             INT = 0
             VIT = 0
@@ -514,7 +563,7 @@ class EnemyStatus():
             Atk1 = int(2 + (Mag - 1))
             Atk2 = int((DiceRoll(2,4) + cnt) * Mag)
             Atk3 = int(cnt//5 * Mag)
-            Defval = int(((DiceRoll(1,4+Mag) + (cnt//2))) * Mag)
+            Defval = int(((DiceRoll(1,int(4+Mag)) + (cnt//2))) * Mag)
             STR = 0
             INT = 0
             VIT = 0
@@ -532,7 +581,7 @@ class EnemyStatus():
             Atk2 = int(40 * Mag)
             Atk3 = 0
             if StageName != "DarkWood":
-                Defval = int(30 * (Mag-1))
+                Defval = int(30 * int(Mag-1))
             else:
                 Defval = 10
             STR = 0
