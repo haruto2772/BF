@@ -16,10 +16,6 @@ def PlayerDef():
         st.session_state["Player"] = OB.PlayerStatus(name, 6, 280, 120, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 20)
     elif "!7" in name:
         st.session_state["Player"] = OB.PlayerStatus(name, 7, 320, 140, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 20)
-<<<<<<< Updated upstream
-    else:
-        st.session_state["Player"] = OB.PlayerStatus(name, 1, 100, 30, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 20)
-=======
     elif "!8" in name:
         st.session_state["Player"] = OB.PlayerStatus(name, 8, 380, 160, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 20)
     else:
@@ -36,7 +32,6 @@ def PlayerDef():
     elif "Swings" in name:
         st.session_state["Player"].Accesory.AddStatus("Swings")
         st.session_state["Player"].Equip(st.session_state["Player"].Weapon, st.session_state["Player"].Armor, st.session_state["Player"].Accesory) 
->>>>>>> Stashed changes
     st.session_state["page_control"] = 0
 
 def change_Town():
@@ -83,12 +78,9 @@ if("page_control" in st.session_state and st.session_state["page_control"] == 0 
     elif st.session_state["Player"].Lv == 7:
         st.session_state["BF1"] = OB.BFStatus("ChaosePlane", 6.4, 20, 0)
         st.session_state["BF2"] = OB.BFStatus("YAMATO", 7.8, 24, 0)
-<<<<<<< Updated upstream
-=======
     elif st.session_state["Player"].Lv > 7:
         st.session_state["BF1"] = OB.BFStatus("YAMATO", 7.8, 24, 0)
         st.session_state["BF2"] = OB.BFStatus("Vhalhara", 10, 30, 0)
->>>>>>> Stashed changes
     else:
         st.session_state["BF1"] = OB.BFStatus("none", 1, 0, 0)
         st.session_state["BF2"] = OB.BFStatus("none", 1, 0, 0)       
