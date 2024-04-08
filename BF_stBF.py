@@ -11,7 +11,7 @@ def change_BFBattleEnd():
     st.session_state["page_control"] = 52
 
 def change_Deadend():
-    st.session_state["Player"].StatusInit()
+    #st.session_state["Player"].StatusInit()
     st.session_state["page_control"] = 0      
 
 def LevelUP():
@@ -158,10 +158,11 @@ def BFResult_PlayerLose():
     st.markdown(st.session_state["BFResult"]) 
     st.button("--------- OK ----------", key = "OK_BF01", on_click = change_Deadend)      
 
+#
 def BF_DispPlayerStatus():
-    st.sidebar.header("BF 1.2")
+    st.header("BF 1.4")
     text = PC.DispPlayerStatus(st.session_state["Player"], True)
-    st.sidebar.markdown(text)
+    st.markdown(text)
 
 def DispBattleHP():
     DispBFinfo()
@@ -220,16 +221,22 @@ def BFinit():
             st.session_state["Player"].Lv == 4 and st.session_state["BF"].StageName == "EvilCastle" or \
             st.session_state["Player"].Lv == 5 and st.session_state["BF"].StageName == "Abyss" or \
             st.session_state["Player"].Lv == 6 and st.session_state["BF"].StageName == "ChaosePlane" or \
+<<<<<<< Updated upstream
             st.session_state["Player"].Lv == 7 and st.session_state["BF"].StageName == "YAMATO":
+=======
+            st.session_state["Player"].Lv == 7 and st.session_state["BF"].StageName == "YAMATO" or \
+            st.session_state["Player"].Lv == 8 and st.session_state["BF"].StageName == "Vhalhara":
+>>>>>>> Stashed changes
             if st.session_state["BF"].StageName == "Abyss":
                 text = "Conglaturations!! "
+            elif st.session_state["BF"].StageName == "Vhalhara":
+                text = "Special Conglaturations!! "
             st.session_state["Player"].Lv += 1
             st.subheader(f"** {text}Clear the {SName} **")
             st.session_state["Player"].Accesory.AddSlot()
             getgold = int(OB.DiceRoll(12,20) * st.session_state["BF"].Mag)
             st.session_state["Player"].gold += getgold
-            if st.session_state["BF"].StageName != "Abyss":
-                st.write("Accesory Slot +1!")        
+            st.write("Accesory Slot +1!")        
             st.write(f"Get {getgold} gold!")  
         else:
             st.write(f"Clear the {SName}")

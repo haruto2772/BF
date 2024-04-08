@@ -27,7 +27,7 @@ def DispPlayerStatus(Player, Flag):
     else:
         Atk3val = ""
     if Player.Armor.def2 > 0:
-        def2val = "+" + str(Player.Armor.def2)
+        def2val = "(+" + str(Player.Armor.def2) + ")"
     else:
         def2val = ""
     if Player.Weapon.slot > 0:
@@ -53,7 +53,7 @@ def DispPlayerStatus(Player, Flag):
         t0 = ""
     t1 = f"Skills : {Skills}"
     t2 = f"*{strval_1} : {Player.Atk1}d{Player.Atk2}{Atk3val} {WepinstatusVal}"
-    t3 = f"*{strval_2} : {Player.Armor.def1}{def2val},{Player.MGR} {ArminstatusVal}"
+    t3 = f"*{strval_2} : {Player.Def}{def2val},{Player.MGR} {ArminstatusVal}"
     t4 = f"*{strval_3} : {AccinstatusVal}"
     return (t0 + t1 + "  \n" + t2 + "  \n" + t3 + "  \n" + t4)
 
@@ -143,20 +143,28 @@ def SelectWeapon(Player, NewWeapon):
 def MakeGetWeapon(cnt, Player):
     Sel = OB.DiceRoll(1,1200)
     if  Sel == 1:
-        NewWeapon = OB.WeaponStatus("MurasameBlade!", int((cnt+2)), 10, 0, 1, "", ["INT25"])
+        NewWeapon = OB.WeaponStatus("MurasameBlade!", int((cnt+2)), 15, 0, 1, "", ["INT25"])
     elif Sel == 2:
         NewWeapon = OB.WeaponStatus("Shurikens!", 1, (cnt+4) * 10, 0, 1, "", ["VIT20"])
     elif Sel == 3:
-        NewWeapon = OB.WeaponStatus("Exculliber!", OB.DiceRoll(1, ((cnt+8)//3)+2), OB.DiceRoll(2, cnt+6+6), 0, 2, "", ["INT25", "MGR25"])
+        NewWeapon = OB.WeaponStatus("Exculliber!", OB.DiceRoll(1, ((cnt+8)//3)+2), OB.DiceRoll(2, cnt+6+8), 0, 2, "", ["INT25", "MGR25"])
     else:
         Atk1 = OB.DiceRoll(1, (cnt//3)+2)
         Atk2 = OB.DiceRoll(1, cnt+6)
         Score = int(Atk1 * Atk2)
+<<<<<<< Updated upstream
         if Score > 300:
             name = "UltemasSword"
         elif Score > 240:
             name = "VorpalSword"
         elif Score > 180:
+=======
+        if Score > 360:
+            name = "UltemasSword"
+        elif Score > 280:
+            name = "VorpalSword"
+        elif Score > 200:
+>>>>>>> Stashed changes
             name = "BasterdSword"
         elif Score > 140:
             name = "GreatSword"
@@ -203,7 +211,11 @@ def MakeGetArmor(cnt, Player):
     else:
         defv = OB.DiceRoll((cnt//4)+1, cnt+2)
         MGR = OB.DiceRoll(1,25)
+<<<<<<< Updated upstream
         if defv > 240:
+=======
+        if defv > 260:
+>>>>>>> Stashed changes
             name = "DoragriteArmor"
         elif defv > 180:
             name = "MakariteArmor"
@@ -277,7 +289,13 @@ def MakeGetScroll(StageStr, Sel):
     return NewScroll
 
 def GetScroll(Player, Rew, StageStr):
+<<<<<<< Updated upstream
     if StageStr == "Abyss" or StageStr == "ChaosePlane" or StageStr == "YAMATO":
+=======
+    if StageStr == "YAMATO" or StageStr == "Vhalhara":
+        det = 250 - int(Rew * 25)
+    if StageStr == "Abyss" or StageStr == "ChaosePlane":
+>>>>>>> Stashed changes
         det = 300 - int(Rew * 25)
     elif StageStr == "EvilCastle":
         det = 350 - int(Rew * 25)
@@ -375,7 +393,11 @@ def MakeGetCrystal(Player, StageStr, Sel):
     return NewCrystal
 
 def GetCrystal(Player, Rew, StageStr):
+<<<<<<< Updated upstream
     if StageStr == "Abyss" or StageStr == "ChaosePlane" or StageStr == "YAMATO":
+=======
+    if StageStr == "Abyss" or StageStr == "ChaosePlane" or StageStr == "YAMATO" or StageStr == "Vhalhara":
+>>>>>>> Stashed changes
         det = 100 - int(Rew * 20)
     elif StageStr == "EvilCastle":
         det = 150 - int(Rew * 20)
@@ -387,7 +409,11 @@ def GetCrystal(Player, Rew, StageStr):
     #SelectCrystal(Player, NewCrystal)
 
 def GetShopItem(MonRew, Rew, Player, StageStr):
+<<<<<<< Updated upstream
     if StageStr == "Abyss" or StageStr == "ChaosePlane" or StageStr == "YAMATO":
+=======
+    if StageStr == "Abyss" or StageStr == "ChaosePlane" or StageStr == "YAMATO" or StageStr == "Vhalhara":
+>>>>>>> Stashed changes
         det = 100 - (MonRew * 12)
     elif StageStr == "EvilCastle":
         det = 150 - (MonRew * 12)
@@ -397,7 +423,7 @@ def GetShopItem(MonRew, Rew, Player, StageStr):
     if Sel1 < 2:
         Sel2 = OB.DiceRoll(1, 18)
         Items = MakeGetScroll(StageStr, Sel2)
-    elif Sel1 < 3:
+    elif Sel1 < 4:
         Sel2 = OB.DiceRoll(1, 4)
         Items = MakeGetCrystal(Player, StageStr, Sel2)
     elif Sel1 < int(det/2):

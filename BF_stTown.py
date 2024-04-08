@@ -48,10 +48,11 @@ def buy_ShopItem(cnt, x):
     else:
         st.write("Irregal Item")
 
+#
 def Town_DispPStatus():
-    st.sidebar.header("BF 1.2")
+    st.header("BF 1.4")
     text = PC.DispPlayerStatus(st.session_state["Player"], True)
-    st.sidebar.markdown(text)
+    st.markdown(text)
 
 def Town():
     st.session_state["Player"].CalcBattleStatus()
@@ -129,14 +130,22 @@ def Enchant():
         Wcost = 9999
         WEVal = 0
     elif WVal == 6:
+<<<<<<< Updated upstream
         Wcost = 1500
         WEVal = OB.DiceRoll(6,8)
     elif WVal == 5:
         Wcost = 800
         WEVal = OB.DiceRoll(5,8)
+=======
+        Wcost = 1200
+        WEVal = OB.DiceRoll(6,12)
+    elif WVal == 5:
+        Wcost = 800
+        WEVal = OB.DiceRoll(5,10)
+>>>>>>> Stashed changes
     elif WVal == 4:
         Wcost = 500
-        WEVal = OB.DiceRoll(4,6)
+        WEVal = OB.DiceRoll(4,8)
     elif WVal == 3:
         Wcost = 200
         WEVal = OB.DiceRoll(3,6)
@@ -156,15 +165,23 @@ def Enchant():
         MGRVal = 0
     elif AVal == 6:
         Acost = 1200
+<<<<<<< Updated upstream
         AEVal = OB.DiceRoll(6,8)
         MGRVal = OB.DiceRoll(1, 4)
     elif AVal == 5:
         Acost = 800
         AEVal = OB.DiceRoll(5,8)
+=======
+        AEVal = OB.DiceRoll(6,12)
+        MGRVal = OB.DiceRoll(1, 4)
+    elif AVal == 5:
+        Acost = 800
+        AEVal = OB.DiceRoll(5,10)
+>>>>>>> Stashed changes
         MGRVal = OB.DiceRoll(1, 4)
     elif AVal == 4:
         Acost = 500
-        AEVal = OB.DiceRoll(4,6)
+        AEVal = OB.DiceRoll(4,8)
         MGRVal = OB.DiceRoll(1, 4)
     elif AVal == 3:
         Acost = 200
@@ -249,32 +266,51 @@ def ElderAdvice():
     Town_DispPStatus()
     st.subheader("Elder's Advice") 
     if st.session_state["Player"].Lv == 1:
-        st.write("Welcome to probability forest!  \n \
-                  First, you must be get 2d8 - 3d10 Dagger or ShortSword.  \n \
-                  Second, you must check frequently the ShopItems. \n \
-                  ShopItems lineup increase with your adventure deeper.  \n \
-                  DarkWood's Boss <KingChar> is strong.  \n \
-                  But you use a skill <Curse>, you can strike <KingChar>!")
+        st.write("戦いの場へようこそ！  \n \
+                  まずは敵を倒し、強い武器（2d8～3d10）を手に入れることだ。  \n \
+                  次に町に帰還するたびに、しっかり店のラインナップを確認すること！ \n \
+                  店のラインナップはダンジョンの奥深く潜るほど充実したものになる。  \n \
+                  <DarkWood>のボスは強力だが、スキル<Curse>を使えば突破できるはずだ！")
     elif st.session_state["Player"].Lv == 2:
-        st.write("In DoomsCave, it appear that <TrickFlower>.  \n \
-                  Careful the <TrickFlower>'s skills.  \n \
-                  If you dead, don't give up.  \n \
-                  First, prepare the equipment at the Shop,  \n \
-                  and collect Equipment in first half of Battle Stage!")
+        st.write("この<DoomsCave>から強力な新しい敵<TrickFlower>が登場する。  \n \
+                  特にその<Skill>の中でも<Curse>に注意すること。  \n \
+                  金に余裕があるなら装備を<Enchant>で強化することも忘れてはならない。")
     elif st.session_state["Player"].Lv == 3:
-        st.write("RuinFortless's Boss <HellChar> has a strongest skill <Swings>.  \n \
-                  But, <HellChar>'s HP is Lower,  \n \
-                  You must take an agressive offence, rush! rush! rush!")
+        st.write("<RuinFortless> のボスは強力なスキル<Swings>を使用してくる。  \n \
+                  しかし、奴はHPが低く防御力が弱い。  \n \
+                  先手を取り、速攻で片づける戦略が有効だ。")
     elif st.session_state["Player"].Lv == 4:
-        st.write("EvilCastle's Boss <LordChar> use Magic Fire attack's.  \n \
-                  You must prepare those magic attack's.")
+        st.write("<EvilCastle>のボスは魔法攻撃を多用してくる。  \n \
+                  普段はあまり使わないコマンド<Barrier>が大変有効だ。  \n \
+                  とはいえ普通の攻撃も強力なのでバランスが肝要だろう。")
     elif st.session_state["Player"].Lv == 5:
-        st.write("Abyss's Boss <AbyssChar> has a skill <Curse>.  \n \
-                  You must think about Strategy those attack.")
+        st.write("<Abyss>のボスは強力なスキル<Curse>を使ってくる。  \n \
+                  武器は意味のないものとなるから、魔法攻撃が有効だ。")
     elif st.session_state["Player"].Lv == 6:
+        st.write("このあたりから<Crystal>による強化が重要になってくる。  \n \
+                  武器防具には最大2つの<Slot>を付与することができる。  \n \
+                  また高くつくが<Enchant>による高額帯での強化も有効だ。")
         st.button("老人の話を聞く", on_click = change_Ending01)
+<<<<<<< Updated upstream
     elif st.session_state["Player"].Lv > 6:
         st.write("You did a Great job!")
+=======
+    elif st.session_state["Player"].Lv == 7:
+        st.write("<YAMATO>のボスはとてつもなく強力だ。  \n \
+                  <Scroll>の<Aura>が非常に有効だろう。  \n \
+                  そして特に防御力の強化が要になる。  \n \
+                  <VIT>の数値を上げるように努めるとよい。")
+        st.button("老人の話を聞く", on_click = change_Ending01)
+    elif st.session_state["Player"].Lv == 8:
+        st.write("<Vhalhara>のボスは悪夢の攻撃<Curse>を使ってくる。  \n \
+                  また防御力も非常に高いから。こちらも<Curse>で対抗せねばならない。  \n \
+                  そして敵の使ってくる<Curse>に有効な作戦がある、  \n \
+                  武器の<Enchant>補正は<Curse>の影響を受けないのだ。")
+        st.button("老人の話を聞く", on_click = change_Ending01)
+    elif st.session_state["Player"].Lv > 8:
+        st.write("お前さんは成し遂げた！")
+        st.button("老人の話を聞く", on_click = change_Ending01)
+>>>>>>> Stashed changes
     else:
         st.write("Elder error")
     st.button("Return", on_click = stM.change_Town)
@@ -286,7 +322,7 @@ def Ending01():
     st.write("　老人はにやにやとあなたの表情を吟味しながら続けた。  \n")
     st.write("「楽しめないはずがあるまい。楽しかったからここまでこれたはずだ。  \n")
     st.write("　では問おう。何が楽しかった？」  \n")
-    st.write("　困惑したあなたに老人は語り掛け続けた。  \n")
+    st.write("　老人は語り掛け続けた。  \n")
     st.write("「分らんのか。では教えてやろう。」  \n")
     st.write("　老人は背筋を伸ばしオペラ歌手のように両手を広げ、満面の笑みを浮かべた。  \n")
     st.write("「教えてやろう！お前は何が楽しかったのか！  \n")
@@ -303,7 +339,7 @@ def Ending02():
     st.write("　12が出た瞬間、お前から噴き出る脳汁でわしは溺死しそうになったわいｗ  \n") 
     st.write("   \n")  
     st.write("　期待。これ以上の娯楽はこの世にない。  \n")
-    st.write("　人間は進化し続け、いずれ肉体を捨て、精神だけの存在になる。  \n")
+    st.write("　人類は進化し続け、いずれ肉体を捨て、精神だけの存在になる。  \n")
     st.write("　肉を捨て、肉からなる喜びを捨て去った後、人類は何を楽しみに生きるというのだ。  \n")
     st.write("　それが、期待だ！」  \n")
     st.button("OK", on_click = change_Ending03)
