@@ -221,12 +221,8 @@ def BFinit():
             st.session_state["Player"].Lv == 4 and st.session_state["BF"].StageName == "EvilCastle" or \
             st.session_state["Player"].Lv == 5 and st.session_state["BF"].StageName == "Abyss" or \
             st.session_state["Player"].Lv == 6 and st.session_state["BF"].StageName == "ChaosePlane" or \
-<<<<<<< Updated upstream
-            st.session_state["Player"].Lv == 7 and st.session_state["BF"].StageName == "YAMATO":
-=======
             st.session_state["Player"].Lv == 7 and st.session_state["BF"].StageName == "YAMATO" or \
             st.session_state["Player"].Lv == 8 and st.session_state["BF"].StageName == "Vhalhara":
->>>>>>> Stashed changes
             if st.session_state["BF"].StageName == "Abyss":
                 text = "Conglaturations!! "
             elif st.session_state["BF"].StageName == "Vhalhara":

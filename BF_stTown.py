@@ -130,19 +130,11 @@ def Enchant():
         Wcost = 9999
         WEVal = 0
     elif WVal == 6:
-<<<<<<< Updated upstream
-        Wcost = 1500
-        WEVal = OB.DiceRoll(6,8)
-    elif WVal == 5:
-        Wcost = 800
-        WEVal = OB.DiceRoll(5,8)
-=======
         Wcost = 1200
         WEVal = OB.DiceRoll(6,12)
     elif WVal == 5:
         Wcost = 800
         WEVal = OB.DiceRoll(5,10)
->>>>>>> Stashed changes
     elif WVal == 4:
         Wcost = 500
         WEVal = OB.DiceRoll(4,8)
@@ -165,19 +157,11 @@ def Enchant():
         MGRVal = 0
     elif AVal == 6:
         Acost = 1200
-<<<<<<< Updated upstream
-        AEVal = OB.DiceRoll(6,8)
-        MGRVal = OB.DiceRoll(1, 4)
-    elif AVal == 5:
-        Acost = 800
-        AEVal = OB.DiceRoll(5,8)
-=======
         AEVal = OB.DiceRoll(6,12)
         MGRVal = OB.DiceRoll(1, 4)
     elif AVal == 5:
         Acost = 800
         AEVal = OB.DiceRoll(5,10)
->>>>>>> Stashed changes
         MGRVal = OB.DiceRoll(1, 4)
     elif AVal == 4:
         Acost = 500
@@ -291,10 +275,6 @@ def ElderAdvice():
                   武器防具には最大2つの<Slot>を付与することができる。  \n \
                   また高くつくが<Enchant>による高額帯での強化も有効だ。")
         st.button("老人の話を聞く", on_click = change_Ending01)
-<<<<<<< Updated upstream
-    elif st.session_state["Player"].Lv > 6:
-        st.write("You did a Great job!")
-=======
     elif st.session_state["Player"].Lv == 7:
         st.write("<YAMATO>のボスはとてつもなく強力だ。  \n \
                   <Scroll>の<Aura>が非常に有効だろう。  \n \
@@ -310,7 +290,6 @@ def ElderAdvice():
     elif st.session_state["Player"].Lv > 8:
         st.write("お前さんは成し遂げた！")
         st.button("老人の話を聞く", on_click = change_Ending01)
->>>>>>> Stashed changes
     else:
         st.write("Elder error")
     st.button("Return", on_click = stM.change_Town)

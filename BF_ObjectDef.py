@@ -143,17 +143,12 @@ class CharacterStatus():
 class PlayerStatus(CharacterStatus):
     def __init__(self, name, Lv, HP, MP, Atk1, Atk2, Atk3, Def, STR, INT, VIT, MGR, Stat, Rew, gold):
         CharacterStatus.__init__(self, name, Lv, HP, MP, Atk1, Atk2, Atk3, Def, STR, INT, VIT, MGR, Stat, Rew, gold)
-<<<<<<< Updated upstream
-        Weapon = WeaponStatus("Dagger", 2, 6, 0, 0, "", [])
-        Armor = ArmorStatus("Cloth", 1, 0, 0, "", [])
-=======
         if "Saikyo" in name:
             Weapon = WeaponStatus("Dagger", 20, 99, 0, 0, "", [])
             Armor = ArmorStatus("Cloth", 9999, 0, 0, "", [])
         else:
             Weapon = WeaponStatus("Dagger", 2, 6, 0, 0, "", [])
             Armor = ArmorStatus("Cloth", 1, 0, 0, "", [])
->>>>>>> Stashed changes
         if "!3" in name:
             Accesory = AccesoryStatus("Ring", 3, "", ['','',''])
         elif "!4" in name:
@@ -164,11 +159,8 @@ class PlayerStatus(CharacterStatus):
             Accesory = AccesoryStatus("Ring", 6, "", ['','','','','',''])
         elif "!7" in name:
             Accesory = AccesoryStatus("Ring", 7, "", ['','','','','','',''])
-<<<<<<< Updated upstream
-=======
         elif "!8" in name:
             Accesory = AccesoryStatus("Ring", 8, "", ['','','','','','','',''])
->>>>>>> Stashed changes
         else:
             Accesory = AccesoryStatus("Ring", 1, "", [''])
         #Weapon = WeaponStatus("Dagger", 2, 6, 3, 1, "Fire", ["STR3"])
@@ -463,21 +455,13 @@ class EnemyStatus():
             MonRew = 2 
         elif StageName == "YAMATO" and cnt == 10:
             #BushidoChar
-<<<<<<< Updated upstream
-            name = "BushidoChar(LastBoss)"
-=======
             name = "BushidoChar(StageBoss)"
->>>>>>> Stashed changes
             Lv = int(2 + Mag)
             HP = int((60 + DiceRoll(cnt, 16)) * Mag)
             MP = 40
             Atk1 = int(4 + int((Mag - 1)))
             Atk2 = int((DiceRoll(2,8) + cnt ) * Mag)
-<<<<<<< Updated upstream
-            Atk3 = int(20 * Mag)
-=======
             Atk3 = int(10 * Mag)
->>>>>>> Stashed changes
             Defval = int(((DiceRoll(2,int(Mag+8)) + (cnt//2) + 1)) * Mag)
             STR = 0
             INT = 50
@@ -485,9 +469,6 @@ class EnemyStatus():
             MGR = 75
             Status = ["Swings", "Critical", "Fire"]          
             gold = int(DiceRoll(3, 6) * Mag)
-<<<<<<< Updated upstream
-            MonRew = 2 
-=======
             MonRew = 2
         elif StageName == "Vhalhara" and cnt == 10:
             #OdenChar
@@ -506,7 +487,6 @@ class EnemyStatus():
             Status = ["Power","Curse","Fire"]   
             gold = int(DiceRoll(3, 6) * Mag)
             MonRew = 4 
->>>>>>> Stashed changes
         elif cnt == 5:
             #MiddleBoss
             name = "GigaChar(Boss)"
