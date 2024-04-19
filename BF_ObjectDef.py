@@ -84,7 +84,7 @@ class CharacterStatus():
             return text
         else:
             self.MP -= RedM
-            Healval = DiceRoll(Dice1, Dice2) * Lv
+            Healval = DiceRoll(Dice1, Dice2)
             if (Healval + self.MP) > self.MaxMP:
                 self.MP = self.MaxMP
             else:
@@ -144,8 +144,8 @@ class PlayerStatus(CharacterStatus):
     def __init__(self, name, Lv, HP, MP, Atk1, Atk2, Atk3, Def, STR, INT, VIT, MGR, Stat, Rew, gold):
         CharacterStatus.__init__(self, name, Lv, HP, MP, Atk1, Atk2, Atk3, Def, STR, INT, VIT, MGR, Stat, Rew, gold)
         if "Saikyo" in name:
-            Weapon = WeaponStatus("Dagger", 20, 99, 0, 0, "", [])
-            Armor = ArmorStatus("Cloth", 9999, 0, 0, "", [])
+            Weapon = WeaponStatus("Dagger", 20, 99, 0, 0, "Swings", [])
+            Armor = ArmorStatus("Cloth", 9999, 0, 0, "Mana", [])
         else:
             Weapon = WeaponStatus("Dagger", 2, 6, 0, 0, "", [])
             Armor = ArmorStatus("Cloth", 1, 0, 0, "", [])
@@ -479,7 +479,7 @@ class EnemyStatus():
             Atk1 = int(4 + int((Mag - 1)))
             Atk2 = int((DiceRoll(2,8) + cnt ) * Mag)
             Atk3 = int(10 * Mag)
-            Defval = int(((DiceRoll(10,int(Mag+8)) + (cnt//2) + 1)) * Mag)
+            Defval = int(((DiceRoll(6,int(Mag+8)) + (cnt//2) + 1)) * Mag)
             STR = 50
             INT = 50
             VIT = 80

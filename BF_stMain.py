@@ -141,6 +141,8 @@ elif ("page_control" in st.session_state and st.session_state["page_control"] ==
     stBF.BFResult_PlayerWin()
 elif ("page_control" in st.session_state and st.session_state["page_control"] == 58 ):
     stBF.BFResult_PlayerLose()
+elif ("page_control" in st.session_state and st.session_state["page_control"] == 59 ):
+    stBF.BF_MANUAL_skill()
 elif ("page_control" in st.session_state and st.session_state["page_control"] == 6 ):
     Town.Ending01()
 elif ("page_control" in st.session_state and st.session_state["page_control"] == 61 ):

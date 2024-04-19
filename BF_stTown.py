@@ -48,9 +48,8 @@ def buy_ShopItem(cnt, x):
     else:
         st.write("Irregal Item")
 
-#
 def Town_DispPStatus():
-    st.header("BF 1.4")
+    st.header("BF 1.3")
     text = PC.DispPlayerStatus(st.session_state["Player"], True)
     st.markdown(text)
 
@@ -126,9 +125,12 @@ def Enchant():
     st.subheader("Enchant Workshop")    
     st.write("Select Enchant for ")
     WVal = st.session_state["Player"].Weapon.enum
-    if WVal > 6:
+    if WVal > 7:
         Wcost = 9999
         WEVal = 0
+    elif WVal == 7:
+        Wcost = 2400
+        WEVal = OB.DiceRoll(8,16)
     elif WVal == 6:
         Wcost = 1200
         WEVal = OB.DiceRoll(6,12)
@@ -151,10 +153,14 @@ def Enchant():
         Wcost = 20
         WEVal = OB.DiceRoll(1,4)
     AVal = st.session_state["Player"].Armor.enum
-    if AVal > 6:
+    if AVal > 7:
         Acost = 9999
         AEVal = 0
         MGRVal = 0
+    elif AVal == 7:
+        Acost = 2400
+        AEVal = OB.DiceRoll(8,16)
+        MGRVal = OB.DiceRoll(1, 4)
     elif AVal == 6:
         Acost = 1200
         AEVal = OB.DiceRoll(6,12)
@@ -246,13 +252,14 @@ def change_Ending02():
 def change_Ending03():
     st.session_state["page_control"] = 62
 
+
 def ElderAdvice():
     Town_DispPStatus()
     st.subheader("Elder's Advice") 
     if st.session_state["Player"].Lv == 1:
         st.write("戦いの場へようこそ！  \n \
                   まずは敵を倒し、強い武器（2d8～3d10）を手に入れることだ。  \n \
-                  次に町に帰還するたびに、しっかり店のラインナップを確認すること！ \n \
+                  次に町に帰還するたびに、しっかり店のラインナップを確認すること！  \n \
                   店のラインナップはダンジョンの奥深く潜るほど充実したものになる。  \n \
                   <DarkWood>のボスは強力だが、スキル<Curse>を使えば突破できるはずだ！")
     elif st.session_state["Player"].Lv == 2:
@@ -277,9 +284,10 @@ def ElderAdvice():
         st.button("老人の話を聞く", on_click = change_Ending01)
     elif st.session_state["Player"].Lv == 7:
         st.write("<YAMATO>のボスはとてつもなく強力だ。  \n \
-                  <Scroll>の<Aura>が非常に有効だろう。  \n \
-                  そして特に防御力の強化が要になる。  \n \
-                  <VIT>の数値を上げるように努めるとよい。")
+                  防御力の強化が要になる。  \n \
+                  <VIT>の数値を上げるように努めるとよい。  \n \
+                  それと敵のステータスはランダムに決定される  \n \
+                  弱い値が出るまでしぶとく通い続けることも必要だ。")
         st.button("老人の話を聞く", on_click = change_Ending01)
     elif st.session_state["Player"].Lv == 8:
         st.write("<Vhalhara>のボスは悪夢の攻撃<Curse>を使ってくる。  \n \

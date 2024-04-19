@@ -152,15 +152,15 @@ def MakeGetWeapon(cnt, Player):
         Atk1 = OB.DiceRoll(1, (cnt//3)+2)
         Atk2 = OB.DiceRoll(1, cnt+6)
         Score = int(Atk1 * Atk2)
-        if Score > 360:
+        if Score > 440:
             name = "UltemasSword"
-        elif Score > 280:
+        elif Score > 360:
             name = "VorpalSword"
-        elif Score > 200:
+        elif Score > 280:
             name = "BasterdSword"
-        elif Score > 140:
+        elif Score > 180:
             name = "GreatSword"
-        elif Score > 100:
+        elif Score > 120:
             name = "BloadSword"
         elif Score > 60:
             name = "LongSword"
@@ -278,13 +278,13 @@ def MakeGetScroll(StageStr, Sel):
 
 def GetScroll(Player, Rew, StageStr):
     if StageStr == "YAMATO" or StageStr == "Vhalhara":
-        det = 250 - int(Rew * 25)
+        det = 275 - int(Rew * 25)
     if StageStr == "Abyss" or StageStr == "ChaosePlane":
-        det = 300 - int(Rew * 25)
-    elif StageStr == "EvilCastle":
         det = 350 - int(Rew * 25)
-    else:
+    elif StageStr == "EvilCastle":
         det = 400 - int(Rew * 25)
+    else:
+        det = 450 - int(Rew * 25)
     Sel = OB.DiceRoll(1, det)
     NewScroll = MakeGetScroll(StageStr, Sel)
     return NewScroll
@@ -360,15 +360,23 @@ def MakeGetCrystal(Player, StageStr, Sel):
     if Sel < 2:
         Sta = "STR"
         Val = OB.DiceRoll(1, Player.Lv * 5)
+        if Val >25:
+            Val = 25
     elif Sel < 3:
         Sta = "INT"
         Val = OB.DiceRoll(1, Player.Lv * 5)
+        if Val >25:
+            Val = 25
     elif Sel < 4:
         Sta = "VIT"
         Val = OB.DiceRoll(1, Player.Lv * 4)
+        if Val >20:
+            Val = 20
     elif Sel < 5:
         Sta = "MGR"
         Val = OB.DiceRoll(1, Player.Lv * 5)
+        if Val >25:
+            Val = 25
     else:
         Sta = "none"
         Val = 0
