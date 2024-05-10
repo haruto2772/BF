@@ -55,7 +55,7 @@ def buy_ShopItem(cnt, x, price):
         st.write("Irregal Item")
 
 def Town_DispPStatus():
-    st.header("BF 1.3")
+    st.header("BF 1.3a")
     text = PC.DispPlayerStatus(st.session_state["Player"], True)
     st.markdown(text)
 

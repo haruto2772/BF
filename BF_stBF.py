@@ -221,7 +221,7 @@ def BFResult_PlayerLose():
 
 #
 def BF_DispPlayerStatus():
-    st.header("BF 1.3")
+    st.header("BF 1.3a")
     text = PC.DispPlayerStatus(st.session_state["Player"], True)
     st.markdown(text)
 
