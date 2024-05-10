@@ -26,6 +26,28 @@ def LevelUP():
     st.session_state["Player"].LevelUP(LV1, LV2)
     return f"Level Up! HP +{LV1}, MP +{LV2}"
 
+def dropchicket():
+    text = ""
+    if st.session_state["Enemy"].Enemy.gacha2 != 0:
+        Sel = OB.DiceRoll(1,10)
+        if Sel < st.session_state["Enemy"].Enemy.gacha2:
+            st.session_state["Player"].gacha2 += 1
+            text = "You get 1 Premium chicket!!  \n"
+        else:
+            if st.session_state["Enemy"].Enemy.gacha1 != 0:
+                Sel = OB.DiceRoll(1,10)
+                if Sel < (st.session_state["Enemy"].Enemy.gacha1 + 1):
+                    st.session_state["Player"].gacha1 += 1
+                    text = "You get 1 Normal chicket!  \n"            
+    else:
+        st.session_state["Enemy"].Enemy.gacha1 != 0
+        Sel = OB.DiceRoll(1,10)
+        if Sel < (st.session_state["Enemy"].Enemy.gacha1 + 1):
+            st.session_state["Player"].gacha1 += 1
+            text = "You get 1 Normal chicket!  \n"    
+
+    return text       
+
 def BattleResult(text1):
     if st.session_state["Enemy"].Enemy.HP < 1:
         #Enemy Dead
@@ -36,24 +58,29 @@ def BattleResult(text1):
         gold = st.session_state["Enemy"].Enemy.gold
         st.session_state["Player"].gold += gold
         text4 = f"Get {gold} gold."
+        text5 = ""
         Sel = OB.DiceRoll(1,5)
         if Sel == 5:
-            text5 = LevelUP()
-        else:
-            text5 = ""
-        if "Heal" in st.session_state["Player"].Status:
-            text6 = st.session_state["Player"].Battle_Healing(0, st.session_state["Player"].Lv, 6, 1, True)
+            text6 = LevelUP()
         else:
             text6 = ""
-        if "Mana" in st.session_state["Player"].Status:
-            text7 = st.session_state["Player"].Battle_MPing(0, 1, st.session_state["Player"].Lv + 1, 1, True)
+        if "Immortal!!" in st.session_state["Player"].Status:
+            text7 = st.session_state["Player"].Battle_Healing(0, st.session_state["Player"].Lv, 10, 1, True)
+            text8 = st.session_state["Player"].Battle_MPing(0, 2, st.session_state["Player"].Lv + 1, 1, True)
         else:
-            text7 = ""
-        if text6 != "" or text7 != "":
-            text5 += "  \n"
-        if text7 != "":
+            if "Heal" in st.session_state["Player"].Status:
+                text7 = st.session_state["Player"].Battle_Healing(0, st.session_state["Player"].Lv, 6, 1, True)
+            else:
+                text7 = ""
+            if "Mana" in st.session_state["Player"].Status:
+                text8 = st.session_state["Player"].Battle_MPing(0, 1, st.session_state["Player"].Lv + 1, 1, True)
+            else:
+                text8 = ""
+        if text7 != "" or text8 != "":
             text6 += "  \n"
-        st.session_state["BFResult"] = text1 + "  \n" + text2 + "  \n" + text3 + "  \n" + text4 + "  \n" + text5 + text6 + text7
+        if text8 != "":
+            text7 += "  \n"
+        st.session_state["BFResult"] = text1 + "  \n" + text2 + "  \n" + text3 + "  \n" + text4 + "  \n" + text6 + text7 + text8
         st.session_state["page_control"] = 57
     else:
         text2 = st.session_state["Enemy"].Enemy_Attack(st.session_state["Player"], st.session_state.AuraFlag)
@@ -74,50 +101,73 @@ def BattleResult(text1):
 
 def BF_Attack():
     text1 = ""; text2 = "";text3 = "";
-    if "Swings" in st.session_state["Player"].Status:
+    if "Slash!!" in st.session_state["Player"].Status and "Swings!" in st.session_state["Player"].Status:
+        text1 = st.session_state["Player"].Battle_MultiAttack(st.session_state["Enemy"].Enemy, 0, 4, False)
+    elif "Slash!!" in st.session_state["Player"].Status:
+        text1 = st.session_state["Player"].Battle_MultiAttack(st.session_state["Enemy"].Enemy, 0, 3, False)
+    elif "Swings!" in st.session_state["Player"].Status:
         text1 = st.session_state["Player"].Battle_MultiAttack(st.session_state["Enemy"].Enemy, 0, 2, False)
     else:
         text1 = st.session_state["Player"].Battle_Attack(st.session_state["Enemy"].Enemy, False)
     if "Fire" in st.session_state["Player"].Status:
-        text2 = st.session_state["Player"].Battle_FireBall(st.session_state["Enemy"].Enemy, 0, 2, 12, st.session_state["Player"].Lv) 
+        text2 = st.session_state["Player"].Battle_FireBall(st.session_state["Enemy"].Enemy, 0, 2, 12, st.session_state["Player"].Lv, False) 
     else:
         text2 = ""
-    if "Curse" in st.session_state["Player"].Status:
-        text3 = st.session_state["Player"].Battle_Curse(st.session_state["Enemy"].Enemy, 0, 1, 4, 1, 4, st.session_state["Player"].Lv)
+    if "Inferno!!" in st.session_state["Player"].Status:
+        text3 = st.session_state["Player"].Battle_FireBall(st.session_state["Enemy"].Enemy, 0, 2, 12, st.session_state["Player"].Lv * 3, True) 
     else:
         text3 = ""
-    if text2 != "" or text3 != "":
+    if "Curse!" in st.session_state["Player"].Status:
+        text4 = st.session_state["Player"].Battle_Curse(st.session_state["Enemy"].Enemy, 0, 1, 4, 1, 4, st.session_state["Player"].Lv)
+    else:
+        text4 = ""
+    if text2 != "" or text3 != "" or text4 != "":
         text1 += "  \n"
-    if text3 != "" and text2 != "":
+    if text3 != "" or text4 != "":
         text2 += "  \n"
-    BattleResult(text1 + text2 + text3)
+    if text4 != "":
+        text3 += "  \n"
+    BattleResult(text1 + text2 + text3 + text4)
 
 def BF_WAttack():
     text1 = ""; text2 = "";text3 = "";
-    if "Swings" in st.session_state["Player"].Status:
+    if "Slash!!" in st.session_state["Player"].Status and "Swings!" in st.session_state["Player"].Status:
+        text1 = st.session_state["Player"].Battle_MultiAttack(st.session_state["Enemy"].Enemy, 4, 5, False)
+    elif "Slash!!" in st.session_state["Player"].Status:
+        text1 = st.session_state["Player"].Battle_MultiAttack(st.session_state["Enemy"].Enemy, 4, 4, False)
+    elif "Swings!" in st.session_state["Player"].Status:
         text1 = st.session_state["Player"].Battle_MultiAttack(st.session_state["Enemy"].Enemy, 4, 3, False)
     else:
         text1 = st.session_state["Player"].Battle_MultiAttack(st.session_state["Enemy"].Enemy, 4, 2, False)
     if "Fire" in st.session_state["Player"].Status:
-        text2 = st.session_state["Player"].Battle_FireBall(st.session_state["Enemy"].Enemy, 0, 2, 12, st.session_state["Player"].Lv) 
+        text2 = st.session_state["Player"].Battle_FireBall(st.session_state["Enemy"].Enemy, 0, 2, 12, st.session_state["Player"].Lv,False) 
     else:
         text2 = ""
-    if "Curse" in st.session_state["Player"].Status:
-        text3 = st.session_state["Player"].Battle_Curse(st.session_state["Enemy"].Enemy, 0, 1, 4, 1, 4, st.session_state["Player"].Lv)
+    if "Inferno!!" in st.session_state["Player"].Status:
+        text3 = st.session_state["Player"].Battle_FireBall(st.session_state["Enemy"].Enemy, 0, 2, 12, st.session_state["Player"].Lv * 3, True) 
     else:
         text3 = ""
-    if text2 != "" or text3 != "":
+    if "Curse!" in st.session_state["Player"].Status:
+        text4 = st.session_state["Player"].Battle_Curse(st.session_state["Enemy"].Enemy, 0, 1, 4, 1, 4, st.session_state["Player"].Lv)
+    else:
+        text4 = ""
+    if text2 != "" or text3 != "" or text4 != "":
         text1 += "  \n"
-    if text3 != "":
+    if text3 != "" or text4 != "":
         text2 += "  \n"
-    BattleResult(text1 + text2 + text3)
+    if text4 != "":
+        text3 += "  \n"
+    BattleResult(text1 + text2 + text3 + text4)
 
 def BF_Healing():
     text1 = st.session_state["Player"].Battle_Healing(6, 3, 16, st.session_state["Player"].Lv, False)
     BattleResult(text1)
 
 def BF_FireBall():
-    text1 = st.session_state["Player"].Battle_FireBall(st.session_state["Enemy"].Enemy, 8, 3, 16, st.session_state["Player"].Lv)
+    if "Inferno!!" in st.session_state["Player"].Status:
+        text1 = st.session_state["Player"].Battle_FireBall(st.session_state["Enemy"].Enemy, 8, 3, 16, st.session_state["Player"].Lv * 3, True)
+    else:
+        text1 = st.session_state["Player"].Battle_FireBall(st.session_state["Enemy"].Enemy, 8, 3, 16, st.session_state["Player"].Lv, False)
     BattleResult(text1)
 
 def BF_Curse():
@@ -206,8 +256,11 @@ def DispBattleHP():
 def DispPlayerComand2():   
     col1, col2, col3, col4 = st.columns([1,1,1,1])
     with col1:
-        st.button("----- Attack -----", on_click = BF_Attack)   
-        st.button("--- FireBall(8) ---", on_click = BF_FireBall)
+        st.button("----- Attack -----", on_click = BF_Attack)
+        if "Inferno!!" in st.session_state["Player"].Status:
+            st.button("--- Inferno!!(8) ---", on_click = BF_FireBall)
+        else:
+            st.button("--- FireBall(8) ---", on_click = BF_FireBall)
     with col2:
         st.button("--- WAttack(4) ---", on_click = BF_WAttack)
         st.button("--- Curse(12)---", on_click = BF_Curse)  
@@ -241,11 +294,15 @@ def BFinit():
                 text = "Special Conglaturations!! "
             st.session_state["Player"].Lv += 1
             st.subheader(f"** {text}Clear the {SName} **")
-            st.session_state["Player"].Accesory.AddSlot()
+            
             getgold = int(OB.DiceRoll(12,20) * st.session_state["BF"].Mag)
             st.session_state["Player"].gold += getgold
-            st.write("Accesory Slot +1!")        
-            st.write(f"Get {getgold} gold!")  
+            if st.session_state["Player"].Lv < 6:
+                st.write("Accesory Slot +1!") 
+                st.session_state["Player"].Accesory.AddSlot()   
+            st.write(f"Get {getgold} gold!") 
+            #st.session_state["Player"].gacha2 += 1
+            #st.write("You get 1 Premium chicket!!")
         else:
             st.write(f"Clear the {SName}")
         st.button("Return Town", on_click = stMain.change_Town)
@@ -270,17 +327,28 @@ def Manual_SKill():
     st.write("Curse    : 武器攻撃力、防御力へのデバフ  \n") 
     st.write("Escape   : 撤退し、街へ帰還  \n") 
 
-def Manual_Scroll():
-    st.write("<Scroll>  \n") 
-    st.write("武器、防具、アクセサリに一つ付加可能。効果は重複しない。 \n")
-    st.write("Swings   : 攻撃回数+1。  \n")  
-    st.write("Aura     : 敵の最初の武器攻撃を無効。以降、10%で敵の武器攻撃を無効。  \n") 
-    st.write("Curse    : 武器攻撃時、Curseを使用  \n") 
-    st.write("Fire     : 武器攻撃時、FireBallを使用  \n") 
-    st.write("Power    : 武器ダイスの前値を+2  \n")
-    st.write("Critical : 武器攻撃時、25%でクリティカル攻撃（ダメージ2倍）  \n") 
-    st.write("Mana     : 戦闘終了時、MPを回復  \n") 
-    st.write("Healing  : 戦闘終了時、HPを回復  \n") 
+def Manual_Scroll(newScrollname):
+    if "Slash!!" in newScrollname or \
+        "Immortal!!" in newScrollname or \
+        "ZANTETSU!!" in newScrollname or \
+        "Inferno!!" in newScrollname:
+        st.write("<★Rare Scroll>  \n") 
+        st.write("武器、防具、アクセサリに一つ付加可能。効果は重複しない。 \n")
+        st.write("Slash    : 攻撃回数+2。  \n")  
+        st.write("Immortal : 被武器ダメージ半減＆戦闘終了後、HP,MPが回復  \n") 
+        st.write("ZANTETSU : 武器攻撃時、敵のDefとVITを無視  \n") 
+        st.write("Inferno  : FireBallコマンドがInfernoに変化＆武器攻撃時、Infernoを使用  \n") 
+    else:
+        st.write("<Scroll>  \n") 
+        st.write("武器、防具、アクセサリに一つ付加可能。効果は重複しない。 \n")
+        st.write("Swings   : 攻撃回数+1。  \n")  
+        st.write("Aura     : 敵の最初の武器攻撃を無効。以降、10%で敵の武器攻撃を無効。  \n") 
+        st.write("Curse    : 武器攻撃時、Curseを使用  \n") 
+        st.write("Fire     : 武器攻撃時、FireBallを使用  \n") 
+        st.write("Power    : 武器ダイスの前値を+2  \n")
+        st.write("Critical : 武器攻撃時、25%でクリティカル攻撃（ダメージ2倍）  \n") 
+        st.write("Mana     : 戦闘終了時、MPを回復  \n") 
+        st.write("Healing  : 戦闘終了時、HPを回復  \n") 
 
 def Manual_Crystal():
     st.write("<Crystal>  \n")   
@@ -383,7 +451,7 @@ def SelectScroll():
     st.button("Enchant Armor", key = "Enchant Armor", on_click=Scroll_Armor, args=[st.session_state["NewScroll"].status])
     st.button("Enchant Accesory", key = "Enchant Accesory", on_click=Scroll_Accesory, args=[st.session_state["NewScroll"].status])
     st.button("Drop", on_click = Drop_Scroll)
-    Manual_Scroll()
+    Manual_Scroll(Scrollname)
 
 def GetScroll():
     st.session_state["NewScroll"] = PC.GetScroll(st.session_state["Player"], st.session_state["Enemy"].Enemy.Rew, st.session_state["BF"].StageName)
@@ -394,22 +462,28 @@ def GetScroll():
         GetCrystal()
 
 def change_Crystal_Weapon(BFFlag):
-    if BFFlag == True:
+    if BFFlag == 1:
         st.session_state["page_control"] = 551
-    else:
+    elif BFFlag == 2:
         st.session_state["page_control"] = 554
+    elif BFFlag == 3:
+        st.session_state["page_control"] = 557
 
 def change_Crystal_Armor(BFFlag):
-    if BFFlag == True:
+    if BFFlag == 1:
         st.session_state["page_control"] = 552
-    else:
+    elif BFFlag == 2:
         st.session_state["page_control"] = 555
+    elif BFFlag == 3:
+        st.session_state["page_control"] = 558
 
 def change_Crystal_Accesory(BFFlag):
-    if BFFlag == True:
+    if BFFlag == 1:
         st.session_state["page_control"] = 553
-    else:
+    elif BFFlag == 2:
         st.session_state["page_control"] = 556
+    elif BFFlag == 3:
+        st.session_state["page_control"] = 559
 
 def Enchant_Crystal_Weapon(x, status):
     st.session_state["Player"].Weapon.AddInstatus(x, status)
@@ -455,10 +529,12 @@ def Crystal_Accesory(page_control):
 
 def Drop_Crystal(BFFlag):
     #st.write("Drop Crystal!")
-    if BFFlag == True:
+    if BFFlag == 1:
         st.session_state["page_control"] = 5
-    else:
+    elif BFFlag == 2:
         st.session_state["page_control"] = 1
+    elif BFFlag == 3:
+        st.session_state["page_control"] = 7
 
 def SelectCrystal(BFFlag):
     BF_DispPlayerStatus()
@@ -485,6 +561,6 @@ def SelectCrystal(BFFlag):
 def GetCrystal():
     st.session_state["NewCrystal"] = PC.GetCrystal(st.session_state["Player"], st.session_state["Enemy"].Enemy.Rew, st.session_state["BF"].StageName)
     if st.session_state["NewCrystal"].status != "none0":
-        SelectCrystal(True)      
+        SelectCrystal(1)      
     else:
         BFinit()

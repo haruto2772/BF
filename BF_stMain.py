@@ -7,31 +7,25 @@ import PCommand as PC
 def PlayerDef():
     name = st.session_state["inname"]
     if "!3" in name:
-        st.session_state["Player"] = OB.PlayerStatus(name, 3, 160, 60, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 20)
+        st.session_state["Player"] = OB.PlayerStatus(name, 3, 160, 60, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 20, 1, 0)
     elif "!4" in name:
-        st.session_state["Player"] = OB.PlayerStatus(name, 4, 200, 80, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 20)
+        st.session_state["Player"] = OB.PlayerStatus(name, 4, 200, 80, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 20, 1, 0)
     elif "!5" in name:
-        st.session_state["Player"] = OB.PlayerStatus(name, 5, 240, 100, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 20)
+        st.session_state["Player"] = OB.PlayerStatus(name, 5, 240, 100, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 20, 1, 0)
     elif "!6" in name:
-        st.session_state["Player"] = OB.PlayerStatus(name, 6, 280, 120, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 20)
+        st.session_state["Player"] = OB.PlayerStatus(name, 6, 280, 120, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 20, 1, 0)
     elif "!7" in name:
-        st.session_state["Player"] = OB.PlayerStatus(name, 7, 320, 140, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 20)
+        st.session_state["Player"] = OB.PlayerStatus(name, 7, 320, 140, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 20, 1, 0)
     elif "!8" in name:
-        st.session_state["Player"] = OB.PlayerStatus(name, 8, 380, 160, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 20)
+        st.session_state["Player"] = OB.PlayerStatus(name, 8, 380, 160, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 20, 1, 0)
     else:
-        st.session_state["Player"] = OB.PlayerStatus(name, 1, 100, 30, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 20)
+        st.session_state["Player"] = OB.PlayerStatus(name, 1, 100, 30, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 20, 3, 0)
     if "Saikyo" in name:
         st.session_state["Player"].LevelUP(9999, 9999)
         st.session_state["Player"].gold = 9999
-    if "Aura" in name:
-        st.session_state["Player"].Accesory.AddStatus("Aura")
-        st.session_state["Player"].Equip(st.session_state["Player"].Weapon, st.session_state["Player"].Armor, st.session_state["Player"].Accesory) 
-    elif "Curse" in name:
-        st.session_state["Player"].Accesory.AddStatus("Curse")
-        st.session_state["Player"].Equip(st.session_state["Player"].Weapon, st.session_state["Player"].Armor, st.session_state["Player"].Accesory)
-    elif "Swings" in name:
-        st.session_state["Player"].Accesory.AddStatus("Swings")
-        st.session_state["Player"].Equip(st.session_state["Player"].Weapon, st.session_state["Player"].Armor, st.session_state["Player"].Accesory) 
+    if "#" in name:
+        st.session_state["Player"].gacha1 = 99
+        st.session_state["Player"].gacha2 = 99
     st.session_state["page_control"] = 0
 
 def change_Town():
@@ -97,7 +91,7 @@ elif ("page_control" in st.session_state and st.session_state["page_control"] ==
     stBF.SelectScroll()
     st.session_state["page_control"] = 1
 elif ("page_control" in st.session_state and st.session_state["page_control"] == 14 ):
-    stBF.SelectCrystal(False)
+    stBF.SelectCrystal(2)
     st.session_state["page_control"] = 1
 elif ("page_control" in st.session_state and st.session_state["page_control"] == 2 ):
     Town.Enchant()
@@ -137,6 +131,12 @@ elif ("page_control" in st.session_state and st.session_state["page_control"] ==
     stBF.Crystal_Armor(1)
 elif ("page_control" in st.session_state and st.session_state["page_control"] == 556 ):
     stBF.Crystal_Accesory(1) 
+elif ("page_control" in st.session_state and st.session_state["page_control"] == 557 ):
+    stBF.Crystal_Weapon(7)
+elif ("page_control" in st.session_state and st.session_state["page_control"] == 558 ):
+    stBF.Crystal_Armor(7)
+elif ("page_control" in st.session_state and st.session_state["page_control"] == 559 ):
+    stBF.Crystal_Accesory(7) 
 elif ("page_control" in st.session_state and st.session_state["page_control"] == 57 ):
     stBF.BFResult_PlayerWin()
 elif ("page_control" in st.session_state and st.session_state["page_control"] == 58 ):
@@ -149,7 +149,27 @@ elif ("page_control" in st.session_state and st.session_state["page_control"] ==
     Town.Ending02()
 elif ("page_control" in st.session_state and st.session_state["page_control"] == 62 ):
     Town.Ending03()
-elif ("page_control" in st.session_state and st.session_state["page_control"] == 999 ):
+elif ("page_control" in st.session_state and st.session_state["page_control"] == 63 ):
+    Town.Ending04()
+elif ("page_control" in st.session_state and st.session_state["page_control"] == 7 ):
+    Town.Gacha()
+elif ("page_control" in st.session_state and st.session_state["page_control"] == 71 ):
+    Town.Gacha_Result(1)
+elif ("page_control" in st.session_state and st.session_state["page_control"] == 71 ):
+    Town.Gacha_Result(2)
+elif ("page_control" in st.session_state and st.session_state["page_control"] == 711 ):
+    stBF.SelectWeapon()
+    st.session_state["page_control"] = 7
+elif ("page_control" in st.session_state and st.session_state["page_control"] == 712 ):
+    stBF.SelectArmor()
+    st.session_state["page_control"] = 7
+elif ("page_control" in st.session_state and st.session_state["page_control"] == 713 ):
+    stBF.SelectScroll()
+    st.session_state["page_control"] = 7
+elif ("page_control" in st.session_state and st.session_state["page_control"] == 714 ):
+    stBF.SelectCrystal(3)
+    st.session_state["page_control"] = 7
+elif ("page_control" in st.session_state and st.session_state["page_control"] == 9 ):
     st.write("error")
 else:
     name = st.text_input('Input Name', key = "inname", on_change = PlayerDef)

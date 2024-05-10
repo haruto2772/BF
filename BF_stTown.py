@@ -9,6 +9,11 @@ def ca():
 def ea():
     st.session_state["page_control"] = 4
 
+def ga():
+    st.session_state["GachaList"] = []
+    st.session_state["GachaChicketCheck"] = ""
+    st.session_state["page_control"] = 7
+
 def change_BFinit(BF):
     st.session_state["BF"] = BF
     st.session_state["ShopList"] = []
@@ -19,6 +24,7 @@ def Town_command():
     st.button("Town Enchant", on_click = stM.change_Enchant)
     st.button("Town AddSlot", on_click = ca)
     st.button("Town Elder Advice", on_click = ea)
+    #st.button("★Gacha!", on_click=ga )
     BF1 = "BF " + st.session_state["BF1"].StageName
     BF2 = "BF " + st.session_state["BF2"].StageName
     if BF1 != "BF none":
@@ -26,13 +32,13 @@ def Town_command():
     if BF2 != "BF none":
         st.button(BF2, on_click = change_BFinit, args = [st.session_state["BF2"]])
 
-def buy_ShopItem(cnt, x):
-    if st.session_state["Player"].gold < 20:
+def buy_ShopItem(cnt, x, price):
+    if st.session_state["Player"].gold < price:
         st.write("You have not enogh money!")
-        st.button("Return", on_click = stM.change_Town())  
+        st.button("Return", on_click = change_Town())  
         return
     del st.session_state["ShopList"][cnt-1]
-    st.session_state["Player"].gold -= 20
+    st.session_state["Player"].gold -= price
     if x.species == "Weapon":
         st.session_state["NewWeapon"] = x
         st.session_state["page_control"] = 11
@@ -65,7 +71,7 @@ def Shop():
     st.write("All item's price are 20 gold.")
     if st.session_state["ShopList"] == []:
         st.write("There is no line-up.")
-        st.button("Return", on_click = stM.change_Town())
+        st.button("Return", on_click = change_Town())
         return
     cnt = 0
     for x in st.session_state["ShopList"]:
@@ -80,9 +86,11 @@ def Shop():
             text = x.name
         else:
             text = "none"
-        st.button(text, key = cnt, on_click = buy_ShopItem, args = [cnt, x])  
-    #st.button("Town", on_click = stM.change_Town)
-    st.button("Return", on_click = stM.change_Town)
+        if "!" in text:
+            text = "★" + text
+        st.button(text, key = cnt, on_click = buy_ShopItem, args = [cnt, x, 20])  
+    #st.button("Town", on_click = change_Town)
+    st.button("Return", on_click = change_Town)
         
 def Enchant_Weapon():
     if st.session_state.WEcost[0] == 9999:
@@ -138,7 +146,7 @@ def Enchant():
         Wcost = 800
         WEVal = OB.DiceRoll(5,10)
     elif WVal == 4:
-        Wcost = 500
+        Wcost = 400
         WEVal = OB.DiceRoll(4,8)
     elif WVal == 3:
         Wcost = 200
@@ -170,7 +178,7 @@ def Enchant():
         AEVal = OB.DiceRoll(5,10)
         MGRVal = OB.DiceRoll(1, 4)
     elif AVal == 4:
-        Acost = 500
+        Acost = 400
         AEVal = OB.DiceRoll(4,8)
         MGRVal = OB.DiceRoll(1, 4)
     elif AVal == 3:
@@ -201,7 +209,7 @@ def Enchant():
     else:    
         st.write(f"Armor cost is {Acost} gold.")
         st.button("Armor", on_click = change_Enchant_Armor)
-    st.button("Return", on_click = stM.change_Town)
+    st.button("Return", on_click = change_Town)
 
 def AddSlot_Weapon():
     if st.session_state["Player"].Weapon.slot > 1:
@@ -241,7 +249,88 @@ def AddSlot():
     st.write("Select AddSlot for ") 
     st.button("Weapon", on_click = change_AddSlot_Weapon)
     st.button("Armor", on_click = change_AddSlot_Armor)
-    st.button("Return", on_click = stM.change_Town)
+    st.button("Return", on_click = change_Town)
+
+def buy_GachaItem(cnt, x):
+    del st.session_state["GachaList"][cnt-1]
+    if x.species == "Weapon":
+        st.session_state["NewWeapon"] = x
+        st.session_state["page_control"] = 711
+    elif x.species == "Armor":
+        st.session_state["NewArmor"] = x
+        st.session_state["page_control"] = 712    
+    elif x.species == "Scroll":
+        st.session_state["NewScroll"] = x
+        st.session_state["page_control"] = 713
+    elif x.species == "Crystal":
+        st.session_state["NewCrystal"] = x
+        st.session_state["page_control"] = 714
+    else:
+        st.write("Irregal Item")
+
+def Gacha_Result():
+    cnt = 0
+    for x in st.session_state["GachaList"]:
+        cnt += 1
+        if x.species == "Weapon":
+            if x.status != "":
+                xname = x.name + " of " + x.status
+            else:
+                xname = x.name
+            text = xname + ":" + str(x.Atk1) + "d" + str(x.Atk2)
+        elif x.species == "Armor":
+            text = x.name + ":" + str(x.def1) + ", " + str(x.MGR)
+        elif x.species == "Scroll":
+            text = x.name
+        elif x.species == "Crystal":
+            text = x.name
+        else:
+            text = "none"
+        if "!!" in text:
+            text = "★" + text
+        elif "!" in text:
+            text = "☆" + text
+        st.button(text, key = cnt, on_click = buy_GachaItem, args = [cnt, x])  
+
+def change_Gacha(mode):
+    if mode == 1:
+        if st.session_state["Player"].gacha1 < 1:
+            st.session_state["GachaChicketCheck"] = "You not have Gacha_Normal chicket!"
+        else:
+            st.session_state["Player"].gacha1 -= 1
+            st.session_state["GachaChicketCheck"] = ""
+            st.session_state["GachaList"] = PC.MakeGachaList_Normal(((st.session_state["Player"].Lv - 1) * 4), st.session_state["Player"])
+    elif mode == 2:
+        if st.session_state["Player"].gacha2 < 1:
+            st.session_state["GachaChicketCheck"] = "You not have Gacha_Premium chicket!"
+        else:
+            st.session_state["Player"].gacha2 -= 1
+            st.session_state["GachaChicketCheck"] = ""
+            st.session_state["GachaList"] = PC.MakeGachaList_Premium(((st.session_state["Player"].Lv - 1) * 4), st.session_state["Player"])
+    else:
+        pass
+    st.session_state["page_control"] = 7
+
+def change_Town():
+    st.session_state["page_control"] = 0
+
+def Gacha():
+    Town_DispPStatus()
+    st.subheader("Welcome! BF Gacha world!!") 
+    st.write("Normalは通常ゲーム内の装備とコモンScrollが！") 
+    st.write("★Premium★はなんと！ガチャ限定装備、ガチャ限定Scroll、レアScrollが出るよ！") 
+    col1, col2, col3, col4 = st.columns([1,1,1,1])
+    with col1:
+        st.button(" ---- Normal ----", on_click = change_Gacha, args = [1])
+    with col2:
+        st.button("★Premium★", on_click = change_Gacha, args = [2])
+    st.divider()
+    if st.session_state["GachaChicketCheck"] != "":
+        st.write(st.session_state["GachaChicketCheck"])
+    #st.write(st.session_state["GachaList_Normal"])
+    if st.session_state["GachaList"] != []:
+        Gacha_Result()
+    st.button("Return", on_click = change_Town)
 
 def change_Ending01():
     st.session_state["page_control"] = 6
@@ -252,6 +341,8 @@ def change_Ending02():
 def change_Ending03():
     st.session_state["page_control"] = 62
 
+def change_Ending04():
+    st.session_state["page_control"] = 63
 
 def ElderAdvice():
     Town_DispPStatus()
@@ -291,16 +382,15 @@ def ElderAdvice():
         st.button("老人の話を聞く", on_click = change_Ending01)
     elif st.session_state["Player"].Lv == 8:
         st.write("<Vhalhara>のボスは悪夢の攻撃<Curse>を使ってくる。  \n \
-                  また防御力も非常に高いから。こちらも<Curse>で対抗せねばならない。  \n \
+                  また防御力も非常に高いから、こちらも<Curse>で対抗せねばならない。  \n \
                   そして敵の使ってくる<Curse>に有効な作戦がある、  \n \
                   武器の<Enchant>補正は<Curse>の影響を受けないのだ。")
-        st.button("老人の話を聞く", on_click = change_Ending01)
     elif st.session_state["Player"].Lv > 8:
         st.write("お前さんは成し遂げた！")
         st.button("老人の話を聞く", on_click = change_Ending01)
     else:
         st.write("Elder error")
-    st.button("Return", on_click = stM.change_Town)
+    st.button("Return", on_click = change_Town)
 
 def Ending01():
     st.write("老人はあなたの姿を見るなり勢い良くしゃべり始めた。  \n")
@@ -339,5 +429,24 @@ def Ending03():
     st.write("　覚えておけ、そして唱えよ、2d6！」  \n")
     st.subheader("　2d6！　2d6！　2d6！  \n")
     st.write("   \n")
+    st.button("OK", on_click = change_Ending04)
+
+def Ending04():
+    st.write("2024.4.25追記  \n")
+    st.write("　そして分かった！実装してみて改めて分かった！  \n")
+    st.write("　その期待の極みがガチャなのだ！  \n")
+    st.write("　★Premium★ボタンを押す瞬間にあふれ出す脳汁！！  \n")
+    st.write("　それこそが！それこそが！！  \n")
+    st.write("　  \n")
+    st.write("　あらゆるゲームの頂点！  \n")
+    st.write("　目指すべき至高の頂き！！  \n")
+    st.write("   \n")
+    st.write("   \n")
+    st.write("   \n")
+    st.write("   \n")
+    st.write("   \n")
+    st.write("　いやまて、いいのか？…本当にそれでいいのか？…  \n")
+    st.write("　老人は考えるのをやめてしまった。  \n")
+    st.write("   \n")
     st.write("End.   \n")
-    st.button("OK", on_click = stM.change_Town)
+    st.button("OK", on_click = change_Town)

@@ -143,11 +143,11 @@ def SelectWeapon(Player, NewWeapon):
 def MakeGetWeapon(cnt, Player):
     Sel = OB.DiceRoll(1,1200)
     if  Sel == 1:
-        NewWeapon = OB.WeaponStatus("MurasameBlade!", int((cnt+2)), 15, 0, 1, "", ["INT25"])
+        NewWeapon = OB.WeaponStatus("MurasameBlade!", int((cnt+2)), 15, 0, 1, "", ["INT20"])
     elif Sel == 2:
-        NewWeapon = OB.WeaponStatus("Shurikens!", 1, (cnt+4) * 10, 0, 1, "", ["VIT20"])
+        NewWeapon = OB.WeaponStatus("Shurikens!", 1, (cnt+4) * 10, 0, 1, "", ["VIT10"])
     elif Sel == 3:
-        NewWeapon = OB.WeaponStatus("Exculliber!", OB.DiceRoll(1, ((cnt+8)//3)+2), OB.DiceRoll(2, cnt+6+8), 0, 2, "", ["INT25", "MGR25"])
+        NewWeapon = OB.WeaponStatus("Exculliber!", OB.DiceRoll(1, ((cnt+8)//3)+2), OB.DiceRoll(2, cnt+6+8), 0, 2, "", ["INT20", "MGR20"])
     else:
         Atk1 = OB.DiceRoll(1, (cnt//3)+2)
         Atk2 = OB.DiceRoll(1, cnt+6)
@@ -195,14 +195,14 @@ def SelectArmor(Player, NewArmor):
 def MakeGetArmor(cnt, Player):
     Sel = OB.DiceRoll(1,1200)
     if Sel == 1:
-        NewArmor = OB.ArmorStatus("BattleSuite!", int((cnt+6)*(Player.Lv*1.4)), 0, 1, "", ["VIT20"])
+        NewArmor = OB.ArmorStatus("BattleSuite!", int((cnt+6)*(Player.Lv*1.2)), 0, 1, "", ["VIT15"])
     elif Sel == 2:
-        NewArmor = OB.ArmorStatus("O-GUSOKU!", int((cnt+6)*(Player.Lv*1.7)), 25, 1, "", ["STR25"])
+        NewArmor = OB.ArmorStatus("O-GUSOKU!", int((cnt+6)*(Player.Lv*1.5)), 20, 1, "", ["STR20"])
     elif Sel == 3:
-        NewArmor = OB.ArmorStatus("GoldCloss!",OB.DiceRoll(((cnt+8)//4)+1, cnt+2+8), 25, 2, "", ["STR25","INT25"])
+        NewArmor = OB.ArmorStatus("BronzeCloss!",OB.DiceRoll(((cnt+8)//4)+1, cnt+2+6), 20, 1, "", ["INT20"])
     else:
         defv = OB.DiceRoll((cnt//4)+1, cnt+2)
-        MGR = OB.DiceRoll(1,25)
+        MGR = OB.DiceRoll(1,20)
         if defv > 260:
             name = "DoragriteArmor"
         elif defv > 180:
@@ -256,11 +256,11 @@ def SelectScroll(Player, NewScroll):
 
 def MakeGetScroll(StageStr, Sel):
     if Sel < 2:
-        Sta = "Swings"
+        Sta = "Swings!"
     elif Sel < 3:
-        Sta = "Aura"
+        Sta = "Aura!"
     elif Sel < 4:
-        Sta = "Curse"
+        Sta = "Curse!"
     elif Sel < 6:
         Sta = "Critical"
     elif Sel < 8:
@@ -359,24 +359,24 @@ def SelectCrystal(Player, NewCrystal):
 def MakeGetCrystal(Player, StageStr, Sel):
     if Sel < 2:
         Sta = "STR"
-        Val = OB.DiceRoll(1, Player.Lv * 5)
-        if Val >25:
-            Val = 25
-    elif Sel < 3:
-        Sta = "INT"
-        Val = OB.DiceRoll(1, Player.Lv * 5)
-        if Val >25:
-            Val = 25
-    elif Sel < 4:
-        Sta = "VIT"
         Val = OB.DiceRoll(1, Player.Lv * 4)
         if Val >20:
             Val = 20
+    elif Sel < 3:
+        Sta = "INT"
+        Val = OB.DiceRoll(1, Player.Lv * 4)
+        if Val >20:
+            Val = 20
+    elif Sel < 4:
+        Sta = "VIT"
+        Val = OB.DiceRoll(1, Player.Lv * 3)
+        if Val >15:
+            Val = 15
     elif Sel < 5:
         Sta = "MGR"
-        Val = OB.DiceRoll(1, Player.Lv * 5)
-        if Val >25:
-            Val = 25
+        Val = OB.DiceRoll(1, Player.Lv * 4)
+        if Val >20:
+            Val = 20
     else:
         Sta = "none"
         Val = 0
@@ -386,11 +386,11 @@ def MakeGetCrystal(Player, StageStr, Sel):
 
 def GetCrystal(Player, Rew, StageStr):
     if StageStr == "Abyss" or StageStr == "ChaosePlane" or StageStr == "YAMATO" or StageStr == "Vhalhara":
-        det = 100 - int(Rew * 20)
+        det = 120 - int(Rew * 20)
     elif StageStr == "EvilCastle":
-        det = 150 - int(Rew * 20)
+        det = 170 - int(Rew * 20)
     else:
-        det = 200 - int(Rew * 20)
+        det = 250 - int(Rew * 20)
     Sel = OB.DiceRoll(1, det)
     NewCrystal = MakeGetCrystal(Player, StageStr, Sel)
     return NewCrystal
@@ -415,6 +415,102 @@ def GetShopItem(MonRew, Rew, Player, StageStr):
     else:
         Items = MakeGetArmor(Rew, Player)
     return Items
+
+def MakePremium(cnt, Player):
+    Sel = OB.DiceRoll(1,2)
+    if Sel == 1:
+        Sel = OB.DiceRoll(1,4)
+        if Sel == 1:
+            NewItem = OB.ScrollStatus("Slash!!")
+        elif Sel == 2:
+            NewItem = OB.ScrollStatus("Immortal!!")
+        elif Sel == 3:
+            NewItem = OB.ScrollStatus("ZANTETSU!!")
+        elif Sel == 4:
+            NewItem = OB.ScrollStatus("Inferno!!")
+    elif Sel == 2:
+        Sel = OB.DiceRoll(1,4)
+        if Sel == 1:
+            NewItem = OB.WeaponStatus("双剣!!", OB.DiceRoll(2, ((cnt+4)//3)), OB.DiceRoll(2, cnt+6+12), 0, 2, "Swings!", ["STR20","STR20"])
+        elif Sel == 2:
+            NewItem = OB.WeaponStatus("BeamSaber!!", OB.DiceRoll(2, ((cnt+4)//3)), OB.DiceRoll(2, cnt+6+4), 0, 2, "Aura!", ["VIT15","MGR20"])
+        elif Sel == 3:
+            NewItem = OB.ArmorStatus("GoldCloss!!",OB.DiceRoll(((cnt+4)//2)+1, cnt+2+6), 20, 2, "", ["STR20","INT20"])
+        elif Sel == 4:
+            NewItem = OB.ArmorStatus("UniqloSyatsu!!", 1, 99, 1, "", ["VIT40"])
+    return NewItem
+
+def MakeRareEquip(cnt, Player):
+    Sel = OB.DiceRoll(1,6)
+    if  Sel == 1:
+        NewItem = OB.WeaponStatus("MurasameBlade!", int((cnt+2)), 15, 0, 1, "", ["INT20"])
+    elif Sel == 2:
+        NewItem = OB.WeaponStatus("Shurikens!", 1, (cnt+4) * 10, 0, 1, "", ["VIT10"])
+    elif Sel == 3:
+        NewItem = OB.WeaponStatus("Exculliber!", OB.DiceRoll(1, ((cnt+4)//3)), OB.DiceRoll(2, cnt+6+4), 0, 2, "", ["INT20", "MGR20"])
+    elif Sel == 4:
+        NewItem = OB.ArmorStatus("BattleSuite!", int((cnt+4)*(Player.Lv*1.2)), 0, 1, "", ["VIT15"])
+    elif Sel == 5:
+        NewItem = OB.ArmorStatus("O-GUSOKU!", int((cnt+4)*(Player.Lv*1.5)), 20, 1, "", ["STR20"])
+    elif Sel == 6:
+        NewItem = OB.ArmorStatus("BronzeCloss!",OB.DiceRoll(((cnt+8)//4)+1, cnt+2+6), 10, 1, "", ["INT20"])
+    return NewItem
+
+def MakeScCy(Player):
+    Sel = OB.DiceRoll(1,2)
+    if Sel == 1:
+        NewItem = MakeGetScroll("", OB.DiceRoll(1,18))
+    if Sel == 2:
+        NewItem = MakeGetCrystal(Player, "", OB.DiceRoll(1,4))
+    return NewItem
+
+def MakeGachaList_Normal(cnt, Player):
+    GL = []
+    for x in range(10):
+        Sel = OB.DiceRoll(1,100)
+        if Sel > 97:
+           GL.append(MakeGetScroll("", OB.DiceRoll(1,15)+3)) 
+        elif Sel > 93:
+           GL.append(MakeGetCrystal(Player, "", OB.DiceRoll(1,4))) 
+        elif Sel > 46:
+            ap = OB.DiceRoll(1,12)
+            GL.append(MakeGetArmor(cnt + ap, Player))
+        else:
+            ap = OB.DiceRoll(1,12)
+            GL.append(MakeGetWeapon(cnt + ap, Player))
+    return GL
+
+def MakeGachaList_Premium(cnt, Player):
+    GL = []
+    for x in range(10):
+        Sel = OB.DiceRoll(1, 100)
+        ap = OB.DiceRoll(1,6)+6
+        #1等：プレScroll、プレ装備
+        if Sel > 98:
+        #if Sel > 3:
+           GL.append(MakePremium(cnt+ap, Player)) 
+        #2等：レア装備
+        elif Sel > 95:
+        #elif Sel > 2:
+           GL.append(MakeRareEquip(cnt+ap, Player)) 
+        #3等：Scroll, Crystal
+        elif Sel > 90:
+        #elif Sel > 1:
+           GL.append(MakeScCy(Player)) 
+        #はずれ
+        else:
+            Sel = OB.DiceRoll(1,100)
+            if Sel > 97:
+                GL.append(MakeGetScroll("", OB.DiceRoll(1,15)+3)) 
+            elif Sel > 92:
+                GL.append(MakeGetCrystal(Player, "", OB.DiceRoll(1,4))) 
+            elif Sel > 46:
+                ap = OB.DiceRoll(1,12)
+                GL.append(MakeGetArmor(cnt + ap, Player))
+            else:
+                ap = OB.DiceRoll(1,12)
+                GL.append(MakeGetWeapon(cnt + ap, Player))
+    return GL
 
 def GetItem(Player, Lv):
     Sel = OB.DiceRoll(1,20)
