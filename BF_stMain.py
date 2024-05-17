@@ -169,6 +169,9 @@ elif ("page_control" in st.session_state and st.session_state["page_control"] ==
 elif ("page_control" in st.session_state and st.session_state["page_control"] == 714 ):
     stBF.SelectCrystal(3)
     st.session_state["page_control"] = 7
+elif ("page_control" in st.session_state and st.session_state["page_control"] == 715 ):
+    stBF.SelectGoldBag()
+    st.session_state["page_control"] = 7
 elif ("page_control" in st.session_state and st.session_state["page_control"] == 9 ):
     st.write("error")
 else:

@@ -58,6 +58,7 @@ def BattleResult(text1):
         gold = st.session_state["Enemy"].Enemy.gold
         st.session_state["Player"].gold += gold
         text4 = f"Get {gold} gold."
+        #text5 = dropchicket()
         text5 = ""
         Sel = OB.DiceRoll(1,5)
         if Sel == 5:
@@ -80,7 +81,7 @@ def BattleResult(text1):
             text6 += "  \n"
         if text8 != "":
             text7 += "  \n"
-        st.session_state["BFResult"] = text1 + "  \n" + text2 + "  \n" + text3 + "  \n" + text4 + "  \n" + text6 + text7 + text8
+        st.session_state["BFResult"] = text1 + "  \n" + text2 + "  \n" + text3 + "  \n" + text4 + "  \n" + text5 + "  \n" + text6 + text7 + text8
         st.session_state["page_control"] = 57
     else:
         text2 = st.session_state["Enemy"].Enemy_Attack(st.session_state["Player"], st.session_state.AuraFlag)
@@ -221,7 +222,7 @@ def BFResult_PlayerLose():
 
 #
 def BF_DispPlayerStatus():
-    st.header("BF 1.3a")
+    st.header("BF 1.3b")
     text = PC.DispPlayerStatus(st.session_state["Player"], True)
     st.markdown(text)
 
@@ -564,3 +565,9 @@ def GetCrystal():
         SelectCrystal(1)      
     else:
         BFinit()
+
+def SelectGoldBag():
+    Ggold = st.session_state["NewGold"].gold
+    st.write(f"You get {Ggold} gold!")
+    st.session_state["Player"].gold += Ggold
+    st.button("OK")

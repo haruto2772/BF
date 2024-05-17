@@ -52,7 +52,7 @@ class CharacterStatus():
             text = f"{self.name} is {SN}! {Enemy.name} is defended!"
         else:
             Enemy.HP -= DmgVal
-            text = f"{self.name} is {CritMsg}Attack! {DmgVal} Damage!"
+            text = f"{self.name} is {CritMsg} {SN}! {DmgVal} Damage!"
             if Enemy.HP < 1:
                 Enemy.HP = 0
         return text
@@ -354,6 +354,13 @@ class CrystalStatus(ItemStatus):
         name = "Crystal of " + status
         ItemStatus.__init__(self, name, 0, status, [])
 
+class GoldBagStatus(ItemStatus):
+    def __init__(self, gold):
+        self.species = "Gold"
+        name = str(gold) + " gold"
+        self.gold = gold
+        ItemStatus.__init__(self, name, 0, "", [])
+
 class BFStatus():
     def __init__(self, StageName, Mag, Rew, cnt):
         self.StageName = StageName
@@ -485,7 +492,7 @@ class EnemyStatus():
             HP = int((60 + DiceRoll(cnt, 16)) * Mag)
             MP = 40
             Atk1 = int(4 + int((Mag - 1)))
-            Atk2 = int((DiceRoll(2,8) + cnt ) * Mag)
+            Atk2 = int((DiceRoll(2,6) + cnt ) * Mag)
             Atk3 = int(10 * Mag)
             Defval = int(((DiceRoll(2,int(Mag+8)) + (cnt//2) + 1)) * Mag)
             STR = 0
@@ -504,7 +511,7 @@ class EnemyStatus():
             HP = int((60 + DiceRoll(cnt, 16)) * Mag)
             MP = 40
             Atk1 = int(4 + int((Mag - 1)))
-            Atk2 = int((DiceRoll(2,8) + cnt ) * Mag)
+            Atk2 = int((DiceRoll(2,6) + cnt ) * Mag)
             Atk3 = int(10 * Mag)
             Defval = int(((DiceRoll(4,int(Mag+8)) + (cnt//2) + 1)) * Mag)
             STR = 20

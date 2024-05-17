@@ -55,7 +55,7 @@ def buy_ShopItem(cnt, x, price):
         st.write("Irregal Item")
 
 def Town_DispPStatus():
-    st.header("BF 1.3a")
+    st.header("BF 1.3b")
     text = PC.DispPlayerStatus(st.session_state["Player"], True)
     st.markdown(text)
 
@@ -83,6 +83,8 @@ def Shop():
         elif x.species == "Scroll":
             text = x.name
         elif x.species == "Crystal":
+            text = x.name
+        elif x.species == "Gold":
             text = x.name
         else:
             text = "none"
@@ -265,6 +267,9 @@ def buy_GachaItem(cnt, x):
     elif x.species == "Crystal":
         st.session_state["NewCrystal"] = x
         st.session_state["page_control"] = 714
+    elif x.species == "Gold":
+        st.session_state["NewGold"] = x
+        st.session_state["page_control"] = 715
     else:
         st.write("Irregal Item")
 
@@ -283,6 +288,8 @@ def Gacha_Result():
         elif x.species == "Scroll":
             text = x.name
         elif x.species == "Crystal":
+            text = x.name
+        elif x.species == "Gold":
             text = x.name
         else:
             text = "none"
